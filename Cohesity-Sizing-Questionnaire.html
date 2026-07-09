@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cohesity Sizing Questionnaire</title>
+<style>
+  :root{
+    --green:#00A94F; --green-d:#007a3a; --green-l:#e6f7ee;
+    --ink:#0f1e2e; --slate:#33475b; --muted:#6b7c8f;
+    --line:#e2e8f0; --bg:#f4f7fa; --card:#ffffff;
+    --amber:#f5a623; --red:#e0533d; --blue:#2f6fed;
+    --shadow:0 1px 3px rgba(16,30,46,.08),0 6px 24px rgba(16,30,46,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--green-d)}
+  header.top{background:linear-gradient(100deg,#08351f,#0b7a4b 60%,#00A94F);color:#fff;padding:22px 28px;position:relative}
+  header.top .brand{display:flex;align-items:center;gap:14px}
+  .logo{width:40px;height:40px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--green-d);font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+  header.top h1{margin:0;font-size:22px;font-weight:700;letter-spacing:.2px}
+  header.top p{margin:2px 0 0;opacity:.9;font-size:13.5px}
+  .progwrap{margin-top:16px;background:rgba(255,255,255,.18);border-radius:20px;height:10px;overflow:hidden;max-width:520px}
+  .progbar{height:100%;width:0;background:#fff;border-radius:20px;transition:width .4s ease}
+  .progtext{font-size:12.5px;margin-top:6px;opacity:.95}
+  .layout{display:grid;grid-template-columns:230px minmax(0,1fr) 320px;gap:22px;max-width:1400px;margin:22px auto;padding:0 22px;align-items:start}
+  nav.side{position:sticky;top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;box-shadow:var(--shadow);max-height:calc(100vh - 32px);overflow:auto}
+  nav.side a{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;color:var(--slate);text-decoration:none;font-size:13px;font-weight:500}
+  nav.side a:hover{background:var(--green-l);color:var(--green-d)}
+  nav.side a .dot{width:8px;height:8px;border-radius:50%;background:var(--line);flex:none}
+  nav.side a.done .dot{background:var(--green)}
+  nav.side a.active{background:var(--green-l);color:var(--green-d);font-weight:700}
+  main{min-width:0}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:20px;box-shadow:var(--shadow);scroll-margin-top:16px}
+  section.card h2{margin:0 0 4px;font-size:18px;display:flex;align-items:center;gap:10px}
+  section.card h2 .num{background:var(--green);color:#fff;width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:none}
+  section.card .sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+  .fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px}
+  .fgrid.one{grid-template-columns:1fr}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field.full{grid-column:1/-1}
+  label.q{font-size:13.5px;font-weight:600;color:var(--slate)}
+  label.q .req{color:var(--red);margin-left:3px}
+  .hint{font-size:12px;color:var(--muted);margin-top:-1px}
+  input[type=text],input[type=number],input[type=email],select,textarea{
+    width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:14px;background:#fff;color:var(--ink);font-family:inherit;transition:border .15s,box-shadow .15s}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-l)}
+  textarea{min-height:64px;resize:vertical}
+  input.invalid{border-color:var(--red);box-shadow:0 0 0 3px #fde8e4}
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{position:relative}
+  .pill input{position:absolute;opacity:0;width:0;height:0}
+  .pill label{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--line);border-radius:22px;font-size:13px;cursor:pointer;color:var(--slate);background:#fff;transition:.12s;user-select:none}
+  .pill input:checked + label{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
+  .pill label:hover{border-color:var(--green)}
+  .checkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+  .chk{display:flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid var(--line);border-radius:9px;font-size:13px;cursor:pointer;color:var(--slate)}
+  .chk:hover{border-color:var(--green)}
+  .chk input{accent-color:var(--green);width:16px;height:16px}
+  .chk.on{background:var(--green-l);border-color:var(--green);color:var(--green-d);font-weight:600}
+  .enable{display:flex;align-items:center;gap:12px;background:var(--green-l);border:1px solid #cdead9;border-radius:10px;padding:10px 14px;margin-bottom:16px}
+  .switch{position:relative;width:46px;height:26px;flex:none}
+  .switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;inset:0;background:#c7d2dd;border-radius:20px;transition:.2s;cursor:pointer}
+  .slider:before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+  .switch input:checked + .slider{background:var(--green)}
+  .switch input:checked + .slider:before{transform:translateX(20px)}
+  .enable .etext{font-size:13.5px;font-weight:600;color:var(--slate)}
+  .collapsed .body-wrap{display:none}
+  aside.est{position:sticky;top:16px}
+  .est-card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+  .est-head{background:var(--ink);color:#fff;padding:14px 16px}
+  .est-head h3{margin:0;font-size:15px}
+  .est-head p{margin:3px 0 0;font-size:11.5px;opacity:.75}
+  .est-body{padding:16px}
+  .bignum{font-size:34px;font-weight:800;color:var(--green-d);line-height:1}
+  .bignum small{font-size:14px;color:var(--muted);font-weight:600}
+  .est-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+  .est-row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px dashed var(--line)}
+  .est-row:last-child{border-bottom:none}
+  .est-row b{color:var(--ink)}
+  .breakdown{margin-top:10px}
+  .breakdown .est-row span:first-child{color:var(--slate)}
+  .disclaimer{font-size:11px;color:var(--muted);margin-top:12px;background:#fff8ec;border:1px solid #f6e2bd;border-radius:8px;padding:9px 11px}
+  .assump{margin-top:12px}
+  .assump summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--slate)}
+  .assump .arow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;font-size:12.5px}
+  .assump .arow input{width:70px;padding:5px 7px;text-align:right}
+  .btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+  .btn{border:none;border-radius:9px;padding:11px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+  .btn.primary{background:var(--green);color:#fff}
+  .btn.primary:hover{background:var(--green-d)}
+  .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--slate)}
+  .btn.ghost:hover{border-color:var(--green);color:var(--green-d)}
+  .metafoot{color:var(--muted);font-size:12px;text-align:center;padding:8px 22px 40px}
+  .modal{position:fixed;inset:0;background:rgba(15,30,46,.55);display:none;align-items:flex-start;justify-content:center;z-index:50;padding:30px 16px;overflow:auto}
+  .modal.open{display:flex}
+  .modal-inner{background:#fff;border-radius:14px;max-width:900px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;border-radius:14px 14px 0 0}
+  .modal-head h2{margin:0;font-size:19px}
+  .modal-body{padding:22px 24px}
+  .x{background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);line-height:1}
+  .sumsec{margin-bottom:20px}
+  .sumsec h4{margin:0 0 8px;font-size:14px;color:var(--green-d);border-bottom:2px solid var(--green-l);padding-bottom:4px}
+  table.sum{width:100%;border-collapse:collapse;font-size:13px}
+  table.sum td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.sum td:first-child{color:var(--slate);width:52%}
+  table.sum td:last-child{font-weight:600}
+  .rec-box{background:var(--green-l);border:1px solid #cdead9;border-radius:10px;padding:16px;margin-bottom:18px}
+  .rec-box .bignum{font-size:28px}
+  @media print{
+    nav.side,aside.est,header.top .progwrap,.enable .switch,.btns{display:none!important}
+    .layout{display:block;max-width:100%}
+    section.card{break-inside:avoid;box-shadow:none}
+    .modal{position:static;background:none;display:block;padding:0}
+    .modal-inner{box-shadow:none;max-width:100%}
+  }
+  @media(max-width:1080px){.layout{grid-template-columns:1fr}nav.side,aside.est{position:static;max-height:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="logo">C</div>
+    <div>
+      <h1>Cohesity Sizing Questionnaire</h1>
+      <p>Interactive data protection sizing worksheet &middot; tell us about your environment and we'll size the right solution</p>
+    </div>
+  </div>
+  <div class="progwrap"><div class="progbar" id="progbar"></div></div>
+  <div class="progtext" id="progtext">0% complete</div>
+</header>
+
+<div class="layout">
+  <nav class="side" id="nav"></nav>
+
+  <main id="form">
+
+    <section class="card" id="s-customer" data-title="Customer & Contact">
+      <h2><span class="num">1</span> Customer &amp; Contact</h2>
+      <p class="sub">Who are we sizing for and who should we follow up with.</p>
+      <div class="fgrid">
+        <div class="field"><label class="q">Company name<span class="req">*</span></label><input type="text" data-req data-key="company"></div>
+        <div class="field"><label class="q">Industry / vertical</label><input type="text" data-key="industry" placeholder="e.g. Financial services"></div>
+        <div class="field"><label class="q">Primary contact name<span class="req">*</span></label><input type="text" data-req data-key="contact"></div>
+        <div class="field"><label class="q">Contact email<span class="req">*</span></label><input type="email" data-req data-key="email"></div>
+        <div class="field"><label class="q">Cohesity account team / partner</label><input type="text" data-key="accountteam"></div>
+        <div class="field"><label class="q">Date completed</label><input type="text" data-key="date" placeholder="YYYY-MM-DD"></div>
+      </div>
+    </section>
+
+    <section class="card" id="s-project" data-title="Project Context">
+      <h2><span class="num">2</span> Project Context &amp; Use Case</h2>
+      <p class="sub">Framing helps us size for the right outcome, not just capacity.</p>
+      <div class="fgrid one">
+        <div class="field full"><label class="q">Primary use case(s) for this project</label>
+          <div class="checkgrid" data-multi="usecase">
+            <label class="chk"><input type="checkbox" value="Backup & recovery">Backup &amp; recovery</label>
+            <label class="chk"><input type="checkbox" value="Ransomware / cyber resilience">Ransomware / cyber resilience</label>
+            <label class="chk"><input type="checkbox" value="Disaster recovery">Disaster recovery</label>
+            <label class="chk"><input type="checkbox" value="Long-term retention / archive">Long-term retention / archive</label>
+            <label class="chk"><input type="checkbox" value="Backup modernization / refresh">Backup modernization / refresh</label>
+            <label class="chk"><input type="checkbox" value="File & object services">File &amp; object services</label>
+            <label class="chk"><input type="checkbox" value="Test/Dev & analytics">Test/Dev &amp; analytics</label>
+            <label class="chk"><input type="checkbox" value="M365 / SaaS protection">M365 / SaaS protection</label>
+          </div>
+        </div>
+      </div>
+      <div class="fgrid" style="margin-top:14px">
+        <div class="field"><label class="q">What is driving this project? (compelling event)</label><input type="text" data-key="driver" placeholder="e.g. Veeam renewal, ransomware audit, EOL hardware"></div>
+        <div class="field"><label class="q">Target deployment timeframe</label>
+          <select data-key="timeframe"><option value="">Select...</option><option>Immediate (&lt; 1 month)</option><option>1-3 months</option><option>3-6 months</option><option>6-12 months</option><option>Evaluating / no date</option></select></div>
+        <div class="field"><label class="q">Sizing horizon (grow the solution for how many years?)<span class="req">*</span></label>
+          <select data-req data-key="termYears"><option value="">Select...</option><option value="1">1 year</option><option value="3" selected>3 years</option><option value="5">5 years</option><option value="7">7 years</option></select></div>
+        <div class="field"><label class="q">Preferred deployment model</label>
+          <div class="pills" data-radio="deploy">
+            <span class="pill"><input type="radio" name="deploy" id="dep1" value="Appliance"><label for="dep1">Appliance</label></span>
+            <span class="pill"><input type="radio" name="deploy" id="dep2" value="Software / ROBO"><label for="dep2">Software-defined</label></span>
+            <span class="pill"><input type="radio" name="deploy" id="dep3" value="Cloud Edition"><label for="dep3">Cloud Edition</label></span>
+            <span class="pill"><input type="radio" name="deploy" id="dep4" value="As-a-Service (DMaaS)"><label for="dep4">As-a-Service</label></span>
+            <span class="pill"><input type="radio" name="deploy" id="dep5" value="Not sure"><label for="dep5">Not sure</label></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="s-sites" data-title="Sites & Replication">
+      <h2><span class="num">3</span> Sites, Topology &amp; Replication</h2>
+      <p class="sub">Where the data lives and how it should be protected across locations.</p>
+      <div class="fgrid">
+        <div class="field"><label class="q">How many sites / datacenters should we size for?<span class="req">*</span></label>
+          <select data-req data-key="sites"><option value="">Select...</option><option>1</option><option>2</option><option>3</option><option>4+</option></select></div>
+        <div class="field"><label class="q">Replicate snapshots between clusters?</label>
+          <select data-key="replication"><option value="">Select...</option><option>No replication</option><option>Yes - Primary to DR</option><option>Yes - Primary to DR and vice versa</option><option>Yes - Multiple sites (mesh/hub)</option></select></div>
+        <div class="field full"><label class="q">What is replicated to which site(s), and target RPO/RTO?</label><textarea data-key="repdetail" placeholder="e.g. All Tier-1 VMs + SQL replicated Primary&rarr;DR; 4hr RPO, 1hr RTO"></textarea></div>
+        <div class="field"><label class="q">Inter-site bandwidth available</label><input type="text" data-key="bandwidth" placeholder="e.g. 10 Gbps dedicated"></div>
+        <div class="field"><label class="q">Is this a multi-tenant / MSP environment?</label>
+          <div class="pills" data-radio="mt"><span class="pill"><input type="radio" name="mt" id="mt1" value="No"><label for="mt1">No</label></span><span class="pill"><input type="radio" name="mt" id="mt2" value="Yes"><label for="mt2">Yes</label></span></div></div>
+      </div>
+    </section>
+
+    <section class="card workload" id="s-vm" data-title="Virtual Machines" data-workload="vm">
+      <h2><span class="num">4</span> Virtual Machines</h2>
+      <p class="sub">Hypervisor-based workloads.</p>
+      <div class="enable"><label class="switch"><input type="checkbox" class="wtoggle" checked><span class="slider"></span></label><span class="etext">We need to protect virtual machines</span></div>
+      <div class="body-wrap">
+      <div class="fgrid">
+        <div class="field"><label class="q">Hypervisor platform(s)</label>
+          <select data-key="vm_hypervisor"><option value="">Select...</option><option>VMware vSphere 8.x</option><option>VMware vSphere 7.x</option><option>VMware vSphere 6.x</option><option>Microsoft Hyper-V</option><option>Nutanix AHV</option><option>Red Hat Virtualization / OpenShift Virt</option><option>KVM / Proxmox</option><option>Multiple (list in notes)</option></select></div>
+        <div class="field"><label class="q">Number of VMs to protect</label><input type="number" min="0" data-key="vm_count" data-count></div>
+        <div class="field"><label class="q">Total front-end data across VMs (TB)<span class="req">*</span></label><input type="number" min="0" step="0.1" data-fetb="vm" data-key="vm_fetb" data-reqif></div>
+        <div class="field"><label class="q">% of environment virtualized</label><input type="number" min="0" max="100" data-key="vm_pctvirt" placeholder="%"></div>
+        <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="vm" data-key="vm_agr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="vm" data-key="vm_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Retention on primary cluster (days)</label><input type="number" min="0" data-ret="vm" data-key="vm_ret" placeholder="days"></div>
+        <div class="field"><label class="q">Replicate VMs to another site?</label>
+          <select data-key="vm_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Bi-directional</option><option>Yes - Multiple sites</option></select></div>
+      </div>
+      <div class="field full" style="margin-top:12px"><label class="q">Notes (large VMs, RDMs, app-consistency needs, etc.)</label><textarea data-key="vm_notes"></textarea>
+      <p class="hint">Tip: attach an RVTools export for VMware to speed this up &mdash; <a href="https://www.robware.net/home" target="_blank" rel="noopener">robware.net</a></p></div>
+      </div>
+    </section>
+
+    <section class="card workload" id="s-phys" data-title="Physical Servers" data-workload="phys">
+      <h2><span class="num">5</span> Physical Servers</h2>
+      <p class="sub">Bare-metal Windows/Linux/Unix hosts.</p>
+      <div class="enable"><label class="switch"><input type="checkbox" class="wtoggle"><span class="slider"></span></label><span class="etext">We need to protect physical servers</span></div>
+      <div class="body-wrap">
+      <div class="fgrid">
+        <div class="field"><label class="q">Number of physical servers</label><input type="number" min="0" data-key="phys_count" data-count></div>
+        <div class="field"><label class="q">Total front-end data (TB)<span class="req">*</span></label><input type="number" min="0" step="0.1" data-fetb="phys" data-key="phys_fetb" data-reqif></div>
+        <div class="field"><label class="q">Operating systems</label>
+          <div class="checkgrid" data-multi="phys_os">
+            <label class="chk"><input type="checkbox" value="Windows">Windows</label>
+            <label class="chk"><input type="checkbox" value="Linux">Linux</label>
+            <label class="chk"><input type="checkbox" value="AIX">AIX</label>
+            <label class="chk"><input type="checkbox" value="Solaris">Solaris</label>
+            <label class="chk"><input type="checkbox" value="HP-UX">HP-UX</label>
+          </div></div>
+        <div class="field"><label class="q">Need Bare Metal Recovery (BMR)?</label>
+          <div class="pills" data-radio="bmr"><span class="pill"><input type="radio" name="bmr" id="bmr1" value="No"><label for="bmr1">No</label></span><span class="pill"><input type="radio" name="bmr" id="bmr2" value="Yes"><label for="bmr2">Yes</label></span></div></div>
+        <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="phys" data-key="phys_agr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="phys" data-key="phys_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Retention (days)</label><input type="number" min="0" data-ret="phys" data-key="phys_ret" placeholder="days"></div>
+        <div class="field"><label class="q">Replicate to another site?</label>
+          <select data-key="phys_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Multiple sites</option></select></div>
+      </div>
+      </div>
+    </section>
+
+    <section class="card workload" id="s-db" data-title="Databases" data-workload="db">
+      <h2><span class="num">6</span> Databases</h2>
+      <p class="sub">Structured data &mdash; SQL, Oracle, and modern/NoSQL engines.</p>
+      <div class="enable"><label class="switch"><input type="checkbox" class="wtoggle"><span class="slider"></span></label><span class="etext">We need to protect databases</span></div>
+      <div class="body-wrap">
+      <div class="fgrid one">
+        <div class="field full"><label class="q">Database platforms in scope</label>
+          <div class="checkgrid" data-multi="db_platforms">
+            <label class="chk"><input type="checkbox" value="Microsoft SQL Server">MS SQL Server</label>
+            <label class="chk"><input type="checkbox" value="Oracle">Oracle</label>
+            <label class="chk"><input type="checkbox" value="SAP HANA">SAP HANA</label>
+            <label class="chk"><input type="checkbox" value="PostgreSQL">PostgreSQL</label>
+            <label class="chk"><input type="checkbox" value="MySQL / MariaDB">MySQL / MariaDB</label>
+            <label class="chk"><input type="checkbox" value="MongoDB">MongoDB</label>
+            <label class="chk"><input type="checkbox" value="Cassandra">Cassandra</label>
+            <label class="chk"><input type="checkbox" value="IBM Db2">IBM Db2</label>
+            <label class="chk"><input type="checkbox" value="Other NoSQL">Other NoSQL</label>
+          </div></div>
+      </div>
+      <div class="fgrid" style="margin-top:12px">
+        <div class="field"><label class="q">Total front-end database size (TB)<span class="req">*</span></label><input type="number" min="0" step="0.1" data-fetb="db" data-key="db_fetb" data-reqif></div>
+        <div class="field"><label class="q">Total number of database instances</label><input type="number" min="0" data-key="db_instances" data-count></div>
+        <div class="field"><label class="q">SQL topology</label>
+          <select data-key="db_sqltopo"><option value="">Select / N/A</option><option>Stand-alone</option><option>Failover Cluster (FCI)</option><option>Always On AG</option><option>Mixed</option></select></div>
+        <div class="field"><label class="q">Oracle RAC in use?</label>
+          <select data-key="db_rac"><option value="">Select / N/A</option><option>No</option><option>Yes</option></select></div>
+        <div class="field"><label class="q">Oracle TDE / compression?</label>
+          <select data-key="db_tde"><option value="">Select / N/A</option><option>None</option><option>TDE encryption</option><option>Compression</option><option>Both</option></select></div>
+        <div class="field"><label class="q">Servers physical, virtual, or both?</label>
+          <select data-key="db_hosting"><option value="">Select...</option><option>Physical</option><option>Virtual</option><option>Both</option></select></div>
+        <div class="field"><label class="q">Backup method preference</label>
+          <select data-key="db_method"><option value="">Select...</option><option>Cohesity agent (integrated)</option><option>DB-native dump to Cohesity</option><option>RMAN / native to NAS</option><option>Not sure</option></select></div>
+        <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="db" data-key="db_agr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="db" data-key="db_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Retention - data (days)</label><input type="number" min="0" data-ret="db" data-key="db_ret" placeholder="days"></div>
+        <div class="field"><label class="q">Log backup frequency</label>
+          <select data-key="db_logfreq"><option value="">Select / N/A</option><option>Every 15 min</option><option>Hourly</option><option>Every 4 hours</option><option>Daily</option><option>No log backups</option></select></div>
+        <div class="field"><label class="q">Replicate DBs to another site?</label>
+          <select data-key="db_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Multiple sites</option></select></div>
+      </div>
+      <div class="field full" style="margin-top:12px"><label class="q">Notes (largest DBs, DataGuard, ASM/filesystem, RTO for restores)</label><textarea data-key="db_notes"></textarea></div>
+      </div>
+    </section>
+
+    <section class="card workload" id="s-nas" data-title="NAS / Unstructured" data-workload="nas">
+      <h2><span class="num">7</span> NAS &amp; Unstructured Data</h2>
+      <p class="sub">File shares, NAS filers, and object data.</p>
+      <div class="enable"><label class="switch"><input type="checkbox" class="wtoggle"><span class="slider"></span></label><span class="etext">We need to protect NAS / file / unstructured data</span></div>
+      <div class="body-wrap">
+      <div class="fgrid">
+        <div class="field"><label class="q">Total front-end NAS/unstructured data (TB)<span class="req">*</span></label><input type="number" min="0" step="0.1" data-fetb="nas" data-key="nas_fetb" data-reqif></div>
+        <div class="field"><label class="q">Number of files (millions, if known)</label><input type="number" min="0" step="0.1" data-key="nas_files" placeholder="millions"></div>
+        <div class="field"><label class="q">Average file size</label><input type="text" data-key="nas_avgsize" placeholder="e.g. 6 MB"></div>
+        <div class="field"><label class="q">NAS vendor / platform</label>
+          <select data-key="nas_vendor"><option value="">Select...</option><option>NetApp ONTAP</option><option>Dell EMC Isilon/PowerScale</option><option>Dell EMC Unity/VNX</option><option>Windows File Server</option><option>Pure FlashBlade</option><option>Qumulo</option><option>Other</option></select></div>
+        <div class="field"><label class="q">Protocols required</label>
+          <div class="checkgrid" data-multi="nas_proto">
+            <label class="chk"><input type="checkbox" value="SMB / CIFS">SMB / CIFS</label>
+            <label class="chk"><input type="checkbox" value="NFS">NFS</label>
+            <label class="chk"><input type="checkbox" value="S3 / Object">S3 / Object</label>
+          </div></div>
+        <div class="field"><label class="q">Performance priority</label>
+          <div class="pills" data-radio="nasperf"><span class="pill"><input type="radio" name="nasperf" id="np1" value="Throughput"><label for="np1">Throughput</label></span><span class="pill"><input type="radio" name="nasperf" id="np2" value="IOPS"><label for="np2">IOPS</label></span><span class="pill"><input type="radio" name="nasperf" id="np3" value="Both"><label for="np3">Both</label></span></div></div>
+        <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="nas" data-key="nas_agr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="nas" data-key="nas_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Retention (days)</label><input type="number" min="0" data-ret="nas" data-key="nas_ret" placeholder="days"></div>
+        <div class="field"><label class="q">% of data NOT deduplicable (pre-compressed/encrypted)</label><input type="number" min="0" max="100" data-key="nas_nodedupe" placeholder="%"></div>
+      </div>
+      <div class="fgrid" style="margin-top:12px">
+        <div class="field"><label class="q">READ throughput requirement (MB/s)</label><input type="number" min="0" data-key="nas_read"></div>
+        <div class="field"><label class="q">WRITE throughput requirement (MB/s)</label><input type="number" min="0" data-key="nas_write"></div>
+      </div>
+      </div>
+    </section>
+
+    <section class="card workload" id="s-m365" data-title="Microsoft 365" data-workload="m365">
+      <h2><span class="num">8</span> Microsoft 365 / SaaS</h2>
+      <p class="sub">Exchange Online, OneDrive, SharePoint, and Teams.</p>
+      <div class="enable"><label class="switch"><input type="checkbox" class="wtoggle"><span class="slider"></span></label><span class="etext">We need to protect Microsoft 365</span></div>
+      <div class="body-wrap">
+      <div class="fgrid">
+        <div class="field"><label class="q">M365 architecture</label>
+          <select data-key="m365_arch"><option value="">Select...</option><option>Fully in M365 cloud</option><option>Hybrid (some on-prem Exchange)</option><option>On-prem now, migrating to M365</option></select></div>
+        <div class="field"><label class="q">Directory services</label>
+          <select data-key="m365_dir"><option value="">Select...</option><option>Entra ID / Azure AD only</option><option>On-prem AD only</option><option>Both (hybrid)</option></select></div>
+        <div class="field"><label class="q">Number of licensed user mailboxes</label><input type="number" min="0" data-key="m365_users" data-count></div>
+        <div class="field"><label class="q">Number of shared mailboxes</label><input type="number" min="0" data-key="m365_shared"></div>
+        <div class="field"><label class="q">Workloads to protect</label>
+          <div class="checkgrid" data-multi="m365_workloads">
+            <label class="chk"><input type="checkbox" value="Exchange Online">Exchange Online</label>
+            <label class="chk"><input type="checkbox" value="OneDrive">OneDrive</label>
+            <label class="chk"><input type="checkbox" value="SharePoint Online">SharePoint Online</label>
+            <label class="chk"><input type="checkbox" value="Teams">Teams</label>
+          </div></div>
+        <div class="field"><label class="q">Total front-end M365 data (TB) &mdash; mail + OneDrive + SharePoint<span class="req">*</span></label><input type="number" min="0" step="0.1" data-fetb="m365" data-key="m365_fetb" data-reqif></div>
+        <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="m365" data-key="m365_agr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="m365" data-key="m365_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Retention (days on Cohesity)</label><input type="number" min="0" data-ret="m365" data-key="m365_ret" placeholder="days"></div>
+        <div class="field"><label class="q">Store M365 backups where?</label>
+          <select data-key="m365_target"><option value="">Select...</option><option>On-prem Cohesity cluster</option><option>Cohesity Cloud Edition</option><option>As-a-Service (DMaaS)</option></select></div>
+      </div>
+      </div>
+    </section>
+
+    <section class="card workload" id="s-cloud" data-title="Cloud & Containers" data-workload="cloud">
+      <h2><span class="num">9</span> Cloud-Native, SaaS &amp; Containers</h2>
+      <p class="sub">Public cloud workloads, Kubernetes, and other SaaS apps.</p>
+      <div class="enable"><label class="switch"><input type="checkbox" class="wtoggle"><span class="slider"></span></label><span class="etext">We have cloud-native / container / other SaaS workloads</span></div>
+      <div class="body-wrap">
+      <div class="fgrid">
+        <div class="field"><label class="q">Cloud platforms in use</label>
+          <div class="checkgrid" data-multi="cloud_platforms">
+            <label class="chk"><input type="checkbox" value="AWS">AWS</label>
+            <label class="chk"><input type="checkbox" value="Azure">Azure</label>
+            <label class="chk"><input type="checkbox" value="Google Cloud">Google Cloud</label>
+            <label class="chk"><input type="checkbox" value="Oracle Cloud">Oracle Cloud</label>
+          </div></div>
+        <div class="field"><label class="q">Cloud workload types</label>
+          <div class="checkgrid" data-multi="cloud_types">
+            <label class="chk"><input type="checkbox" value="Cloud VMs (EC2/Azure VM/GCE)">Cloud VMs</label>
+            <label class="chk"><input type="checkbox" value="Managed DBs (RDS/Azure SQL)">Managed DBs</label>
+            <label class="chk"><input type="checkbox" value="Object (S3/Blob)">Object storage</label>
+            <label class="chk"><input type="checkbox" value="Kubernetes / containers">Kubernetes</label>
+          </div></div>
+        <div class="field"><label class="q">Kubernetes distribution (if any)</label>
+          <select data-key="cloud_k8s"><option value="">Select / N/A</option><option>EKS</option><option>AKS</option><option>GKE</option><option>OpenShift</option><option>Rancher / vanilla k8s</option><option>Tanzu</option></select></div>
+        <div class="field"><label class="q">Total front-end cloud/container data (TB)</label><input type="number" min="0" step="0.1" data-fetb="cloud" data-key="cloud_fetb"></div>
+        <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="cloud" data-key="cloud_agr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="cloud" data-key="cloud_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Retention (days)</label><input type="number" min="0" data-ret="cloud" data-key="cloud_ret" placeholder="days"></div>
+      </div>
+      </div>
+    </section>
+
+    <section class="card" id="s-archive" data-title="Archive & LTR">
+      <h2><span class="num">10</span> Archive &amp; Long-Term Retention</h2>
+      <p class="sub">Tiering older snapshots to cloud or tape for compliance/cost.</p>
+      <div class="fgrid">
+        <div class="field"><label class="q">Archive to cloud/tape for long-term retention?</label>
+          <div class="pills" data-radio="arch"><span class="pill"><input type="radio" name="arch" id="a1" value="No"><label for="a1">No</label></span><span class="pill"><input type="radio" name="arch" id="a2" value="Yes"><label for="a2">Yes</label></span></div></div>
+        <div class="field"><label class="q">Archive target</label>
+          <select data-key="arch_target"><option value="">Select / N/A</option><option>AWS S3 / Glacier</option><option>Azure Blob</option><option>Google Cloud Storage</option><option>S3-compatible on-prem</option><option>Tape</option></select></div>
+        <div class="field full"><label class="q">Long-term retention policy</label><textarea data-key="arch_policy" placeholder="e.g. 30 days on cluster, then monthly to cloud retained 7 years"></textarea></div>
+      </div>
+    </section>
+
+    <section class="card" id="s-security" data-title="Security & Compliance">
+      <h2><span class="num">11</span> Security, Compliance &amp; Cyber Resilience</h2>
+      <p class="sub">Ransomware protection and regulatory requirements.</p>
+      <div class="fgrid one">
+        <div class="field full"><label class="q">Required security capabilities</label>
+          <div class="checkgrid" data-multi="sec_caps">
+            <label class="chk"><input type="checkbox" value="Immutable snapshots (DataLock)">Immutable snapshots</label>
+            <label class="chk"><input type="checkbox" value="Air-gapped / isolated vault (FortKnox)">Air-gapped vault</label>
+            <label class="chk"><input type="checkbox" value="Ransomware / anomaly detection">Anomaly detection</label>
+            <label class="chk"><input type="checkbox" value="Encryption at rest & in flight">Encryption</label>
+            <label class="chk"><input type="checkbox" value="WORM / compliance mode">WORM / compliance</label>
+            <label class="chk"><input type="checkbox" value="MFA / RBAC / SSO">MFA / RBAC / SSO</label>
+            <label class="chk"><input type="checkbox" value="Classification / threat scanning">Data classification</label>
+          </div></div>
+      </div>
+      <div class="fgrid" style="margin-top:12px">
+        <div class="field"><label class="q">Compliance frameworks in scope</label><input type="text" data-key="sec_frameworks" placeholder="e.g. HIPAA, PCI-DSS, GDPR, SOX, FedRAMP"></div>
+        <div class="field"><label class="q">Target ransomware recovery RTO</label><input type="text" data-key="sec_rto" placeholder="e.g. critical apps in < 4 hours"></div>
+      </div>
+    </section>
+
+    <section class="card" id="s-current" data-title="Current Environment">
+      <h2><span class="num">12</span> Current Backup Environment</h2>
+      <p class="sub">What you have today &mdash; helps us plan migration and comparisons.</p>
+      <div class="fgrid">
+        <div class="field"><label class="q">Current data protection solution</label>
+          <select data-key="cur_solution"><option value="">Select...</option><option>Veeam</option><option>Veritas NetBackup</option><option>Commvault</option><option>Rubrik</option><option>Dell (Avamar/PowerProtect/NetWorker)</option><option>IBM Spectrum Protect</option><option>Druva</option><option>HYCU</option><option>Native / scripts</option><option>None</option><option>Other</option></select></div>
+        <div class="field"><label class="q">Existing Cohesity customer?</label>
+          <div class="pills" data-radio="curcoh"><span class="pill"><input type="radio" name="curcoh" id="cc1" value="No"><label for="cc1">No</label></span><span class="pill"><input type="radio" name="curcoh" id="cc2" value="Yes"><label for="cc2">Yes</label></span></div></div>
+        <div class="field full"><label class="q">If existing Cohesity, describe current clusters (sites, node models, nodes, version)</label><textarea data-key="cur_cohdetail"></textarea></div>
+        <div class="field full"><label class="q">What's driving you to change? Pain points with current solution?</label><textarea data-key="cur_pain"></textarea></div>
+      </div>
+    </section>
+
+    <section class="card" id="s-network" data-title="Networking">
+      <h2><span class="num">13</span> Networking</h2>
+      <p class="sub">For appliance deployments &mdash; skip if buying software/as-a-service.</p>
+      <div class="fgrid">
+        <div class="field"><label class="q">Network speed</label>
+          <select data-key="net_speed"><option value="">Select...</option><option>1 GbE</option><option>10 GbE</option><option>25 GbE</option><option>40 GbE</option><option>100 GbE</option></select></div>
+        <div class="field"><label class="q">Preferred NIC type</label>
+          <select data-key="net_nic"><option value="">Select...</option><option>10GB RJ45</option><option>10GB SFP+ (LC/LC)</option><option>25GB SFP28</option><option>40GB QSFP</option><option>100GB QSFP28</option></select></div>
+        <div class="field"><label class="q">Port type</label>
+          <div class="pills" data-radio="net_port"><span class="pill"><input type="radio" name="net_port" id="pt1" value="Access"><label for="pt1">Access</label></span><span class="pill"><input type="radio" name="net_port" id="pt2" value="Trunk (VLAN)"><label for="pt2">Trunk (VLAN)</label></span></div></div>
+        <div class="field"><label class="q">Jumbo frames (MTU 9000)?</label>
+          <div class="pills" data-radio="net_jumbo"><span class="pill"><input type="radio" name="net_jumbo" id="jf1" value="Yes"><label for="jf1">Yes</label></span><span class="pill"><input type="radio" name="net_jumbo" id="jf2" value="No"><label for="jf2">No</label></span></div></div>
+        <div class="field"><label class="q">Multicast enabled?</label>
+          <div class="pills" data-radio="net_mc"><span class="pill"><input type="radio" name="net_mc" id="mc1" value="Yes"><label for="mc1">Yes</label></span><span class="pill"><input type="radio" name="net_mc" id="mc2" value="No"><label for="mc2">No</label></span></div></div>
+        <div class="field"><label class="q">Open switch ports available (2 per node)?</label>
+          <div class="pills" data-radio="net_ports"><span class="pill"><input type="radio" name="net_ports" id="op1" value="Yes"><label for="op1">Yes</label></span><span class="pill"><input type="radio" name="net_ports" id="op2" value="No"><label for="op2">No</label></span></div></div>
+      </div>
+    </section>
+
+    <section class="card" id="s-hardware" data-title="Hardware Preferences">
+      <h2><span class="num">14</span> Hardware &amp; Platform Preferences</h2>
+      <p class="sub">Optional preferences that shape the recommendation.</p>
+      <div class="fgrid">
+        <div class="field"><label class="q">Preferred server hardware vendor</label>
+          <select data-key="hw_vendor"><option value="">No preference</option><option>Cohesity appliance</option><option>HPE</option><option>Cisco</option><option>Dell</option><option>Lenovo</option><option>Fujitsu</option></select></div>
+        <div class="field"><label class="q">Normal hardware refresh lifecycle</label>
+          <select data-key="hw_lifecycle"><option value="">Select...</option><option>3 years</option><option>4 years</option><option>5 years</option><option>7 years</option></select></div>
+        <div class="field"><label class="q">Rack space / power constraints?</label><input type="text" data-key="hw_rack" placeholder="e.g. limited to 4U, single rack"></div>
+        <div class="field"><label class="q">Storage tier preference</label>
+          <select data-key="hw_tier"><option value="">No preference</option><option>All-flash (performance)</option><option>Hybrid (balanced)</option><option>Dense/capacity (archive)</option></select></div>
+      </div>
+      <div class="field full" style="margin-top:12px"><label class="q">Anything else we should know? (special apps, constraints, questions)</label><textarea data-key="final_notes"></textarea></div>
+    </section>
+
+  </main>
+
+  <aside class="est">
+    <div class="est-card">
+      <div class="est-head"><h3>Live Sizing Estimate</h3><p>Updates as you fill in the form</p></div>
+      <div class="est-body">
+        <div class="est-label">Est. physical capacity required</div>
+        <div class="bignum" id="estPhysical">0 <small>TB</small></div>
+        <div class="est-row" style="margin-top:4px"><span>Estimated nodes (if node raw TB set)</span><b id="estNodes">&mdash;</b></div>
+        <div class="breakdown" id="breakdown"></div>
+        <div class="est-row" style="margin-top:8px"><span>Total front-end (source) data</span><b id="estFetb">0 TB</b></div>
+        <div class="est-row"><span>Grown (<span id="estYears">3</span> yr) + retained logical</span><b id="estLogical">0 TB</b></div>
+        <div class="est-row"><span>After dedupe &amp; compression (BETB)</span><b id="estReduced">0 TB</b></div>
+        <div class="est-row"><span>+ buffer (÷ 1&minus;<span id="estBuf">20</span>%)</span><b id="estBuffered">0 TB</b></div>
+        <div class="est-row"><span>÷ resiliency usable (<span id="estResPct">50</span>%)</span><b id="estRaw">0 TB</b></div>
+
+        <details class="assump">
+          <summary>Adjust sizing assumptions</summary>
+          <div class="arow"><span>VM data reduction ratio</span><input type="number" step="0.1" id="dr_vm" value="4"></div>
+          <div class="arow"><span>DB data reduction ratio</span><input type="number" step="0.1" id="dr_db" value="2.5"></div>
+          <div class="arow"><span>NAS data reduction ratio</span><input type="number" step="0.1" id="dr_nas" value="1.8"></div>
+          <div class="arow"><span>Physical data reduction ratio</span><input type="number" step="0.1" id="dr_phys" value="3"></div>
+          <div class="arow"><span>M365 data reduction ratio</span><input type="number" step="0.1" id="dr_m365" value="1.5"></div>
+          <div class="arow"><span>Cloud data reduction ratio</span><input type="number" step="0.1" id="dr_cloud" value="2.5"></div>
+          <div class="arow"><span>Buffer % (WST default 20, min 15)</span><input type="number" step="1" id="buffer" value="20"></div>
+          <div class="arow"><span>Resiliency</span><select id="resiliency" style="width:150px;padding:5px 7px;border:1px solid var(--line);border-radius:6px">
+            <option value="0.50" selected>RF2 &mdash; 50% usable</option>
+            <option value="0.67">EC 2:1 &mdash; 67% usable</option>
+            <option value="0.67">EC 4:2 &mdash; 67% usable</option>
+            <option value="0.71">EC 5:2 &mdash; 71% usable</option>
+          </select></div>
+          <div class="arow"><span>Node raw TB (optional &rarr; node est.)</span><input type="number" step="1" id="nodeRaw" placeholder="e.g. 46"></div>
+          <div class="arow"><span>Default retention (days)</span><input type="number" step="1" id="defRet" value="30"></div>
+          <div class="arow"><span>Default daily change %</span><input type="number" step="0.5" id="defDgr" value="3"></div>
+        </details>
+
+        <div class="disclaimer">Uses the WST field estimation chain: FETB &times; (1+AGR)^Yrs &times; (1+DCR&times;Ret) &divide; Reduction &divide; (1&minus;Buffer%) &divide; ResiliencyUsable%. Rough planning estimate only &mdash; run the official WST for final quotes (databases, periodic fulls, replication, CloudArchive, FortKnox, strict backup windows).</div>
+
+        <div class="btns">
+          <button class="btn primary" id="btnSummary">View summary &amp; recommendation</button>
+          <button class="btn ghost" id="btnExport">Download responses (.json)</button>
+          <button class="btn ghost" id="btnPrint">Print / Save as PDF</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div class="metafoot">Cohesity Sizing Questionnaire &middot; interactive edition &middot; your answers stay in your browser</div>
+
+<div class="modal" id="modal">
+  <div class="modal-inner">
+    <div class="modal-head"><h2>Sizing Summary</h2><button class="x" id="closeModal">&times;</button></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const workloads=['vm','phys','db','nas','m365','cloud'];
+const labels={vm:'Virtual Machines',phys:'Physical Servers',db:'Databases',nas:'NAS / Unstructured',m365:'Microsoft 365',cloud:'Cloud / Containers'};
+
+$$('.workload').forEach(sec=>{
+  const tog=sec.querySelector('.wtoggle');
+  const apply=()=>{ sec.classList.toggle('collapsed',!tog.checked); recalc(); updateProgress(); };
+  tog.addEventListener('change',apply); apply();
+});
+
+$$('.chk input').forEach(cb=>{
+  const set=()=>cb.closest('.chk').classList.toggle('on',cb.checked);
+  cb.addEventListener('change',()=>{set();recalc();updateProgress();}); set();
+});
+$$('.pills input,[data-radio] input').forEach(r=>r.addEventListener('change',()=>{recalc();updateProgress();}));
+$$('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{recalc();updateProgress();}));
+['dr_vm','dr_db','dr_nas','dr_phys','dr_m365','dr_cloud','buffer','resiliency','nodeRaw','defRet','defDgr']
+  .forEach(id=>$('#'+id).addEventListener('input',recalc));
+$('#resiliency').addEventListener('change',recalc);
+
+function num(el){const v=parseFloat(el&&el.value);return isNaN(v)?0:v;}
+function workloadActive(w){const sec=document.querySelector(`[data-workload="${w}"]`);return sec&&!sec.classList.contains('collapsed');}
+
+function recalc(){
+  const years=parseFloat($('[data-key=termYears]').value)||3;
+  $('#estYears').textContent=years;
+  const buffer=Math.min(Math.max(num($('#buffer')),0),95)/100;      // WST buffer, divide by (1-buffer)
+  const resUsable=parseFloat($('#resiliency').value)||0.5;          // resiliency usable fraction
+  const nodeRaw=num($('#nodeRaw'));
+  const defRet=num($('#defRet'))||30;
+  const defDgr=num($('#defDgr'))||3;
+  const ratios={vm:num($('#dr_vm'))||1,db:num($('#dr_db'))||1,nas:num($('#dr_nas'))||1,phys:num($('#dr_phys'))||1,m365:num($('#dr_m365'))||1,cloud:num($('#dr_cloud'))||1};
+
+  let totFetb=0,totLogical=0,totBETB=0;
+  const bd=[];
+  workloads.forEach(w=>{
+    if(!workloadActive(w))return;
+    const fetb=num(document.querySelector(`[data-fetb="${w}"]`));
+    if(fetb<=0)return;
+    const agr=(num(document.querySelector(`[data-agr="${w}"]`)))/100;
+    let dgr=num(document.querySelector(`[data-dgr="${w}"]`)); if(dgr<=0)dgr=defDgr; dgr=dgr/100;
+    let ret=num(document.querySelector(`[data-ret="${w}"]`)); if(ret<=0)ret=defRet;
+    const grown=fetb*Math.pow(1+agr,years);           // Step A: grow source
+    const logical=grown*(1 + dgr*ret);                // Step B: retained logical (DIR)
+    const betb=logical/(ratios[w]||1);                // Step C: post dedupe+compression
+    totFetb+=fetb; totLogical+=logical; totBETB+=betb;
+    bd.push({w,betb});
+  });
+  const buffered=totBETB/(1-buffer);                  // Step D: + buffer
+  const physical=buffered/resUsable;                  // Step E: physical required TB
+  const nodes=(nodeRaw>0 && physical>0)?Math.ceil(physical/nodeRaw):null;
+
+  $('#estFetb').textContent=fmt(totFetb)+' TB';
+  $('#estLogical').textContent=fmt(totLogical)+' TB';
+  $('#estReduced').textContent=fmt(totBETB)+' TB';
+  $('#estBuffered').textContent=fmt(buffered)+' TB';
+  $('#estRaw').textContent=fmt(physical)+' TB';
+  $('#estPhysical').innerHTML=fmt(physical)+' <small>TB</small>';
+  $('#estBuf').textContent=Math.round(buffer*100);
+  $('#estResPct').textContent=Math.round(resUsable*100);
+  $('#estNodes').textContent=nodes?nodes:'—';
+
+  const bdEl=$('#breakdown');
+  bdEl.innerHTML = bd.length? bd.map(b=>`<div class="est-row"><span>${labels[b.w]}</span><b>${fmt(b.betb/(1-buffer)/resUsable)} TB</b></div>`).join('')
+    : '<div class="est-row" style="color:var(--muted)"><span>Enter front-end TB in a workload to see the estimate</span></div>';
+
+  window.__physical=physical; window.__bd=bd; window.__totFetb=totFetb;
+  window.__buffer=buffer; window.__resUsable=resUsable; window.__betb=totBETB; window.__buffered=buffered; window.__nodes=nodes;
+}
+function fmt(n){ if(n>=100)return Math.round(n).toLocaleString(); if(n>=10)return n.toFixed(1); return n.toFixed(2);}
+
+function updateProgress(){
+  let req=[],done=0;
+  $$('[data-req]').forEach(el=>req.push(el));
+  $$('[data-reqif]').forEach(el=>{ const sec=el.closest('.workload'); if(sec&&!sec.classList.contains('collapsed'))req.push(el); });
+  req.forEach(el=>{ const ok=el.value&&el.value.trim()!==''; el.classList.toggle('invalid',!ok); if(ok)done++; });
+  const pct=req.length?Math.round(done/req.length*100):0;
+  $('#progbar').style.width=pct+'%';
+  $('#progtext').textContent=pct+'% of required fields complete ('+done+'/'+req.length+')';
+  buildNav();
+}
+
+function buildNav(){
+  const nav=$('#nav');
+  const secs=$$('main section.card');
+  nav.innerHTML=secs.map(s=>{
+    const collapsed=s.dataset.workload && s.classList.contains('collapsed');
+    const reqs=Array.from(s.querySelectorAll('[data-req],[data-reqif]')).filter(el=>!(s.classList.contains('collapsed')&&el.hasAttribute('data-reqif')));
+    let cls='';
+    if(reqs.length){ cls = reqs.every(el=>el.value&&el.value.trim()) ? 'done':''; }
+    if(collapsed) cls='';
+    return `<a href="#${s.id}" class="${cls}"><span class="dot"></span>${s.dataset.title}</a>`;
+  }).join('');
+}
+
+function gather(){
+  const d={};
+  $$('[data-key]').forEach(el=>{ if(el.value&&el.value.trim())d[el.dataset.key]=el.value.trim(); });
+  $$('[data-radio]').forEach(g=>{ const c=g.querySelector('input:checked'); if(c)d[g.dataset.radio]=c.value; });
+  $$('[data-multi]').forEach(g=>{ const v=Array.from(g.querySelectorAll('input:checked')).map(i=>i.value); if(v.length)d[g.dataset.multi]=v; });
+  d.__activeWorkloads=workloads.filter(workloadActive).map(w=>labels[w]);
+  return d;
+}
+
+$('#btnSummary').addEventListener('click',()=>{
+  recalc();
+  const d=gather();
+  const buf=window.__buffer||0.2, res=window.__resUsable||0.5;
+  const R=(lbl,val)=> val!=null&&val!==''? `<tr><td>${lbl}</td><td>${Array.isArray(val)?val.join(', '):val}</td></tr>`:'';
+  let html='';
+  const physical=window.__physical||0;
+  const resLabel=$('#resiliency').options[$('#resiliency').selectedIndex].text;
+  const nodeTxt=window.__nodes?` &middot; ~${window.__nodes} node(s)`:'';
+  html+=`<div class="rec-box"><div class="est-label">Estimated physical capacity to size for</div><div class="bignum">${fmt(physical)} TB</div>
+    <div style="font-size:12.5px;color:var(--slate);margin-top:6px">Across: ${(d.__activeWorkloads||[]).join(', ')||'&mdash;'} &middot; ${d.termYears||3}-year horizon &middot; ${Math.round(buf*100)}% buffer &middot; ${resLabel}${nodeTxt}</div></div>`;
+  if(window.__bd&&window.__bd.length){
+    html+=`<div class="sumsec"><h4>Physical capacity by workload (TB)</h4><table class="sum">`+
+      window.__bd.map(b=>`<tr><td>${labels[b.w]}</td><td>${fmt(b.betb/(1-buf)/res)} TB</td></tr>`).join('')+
+      `<tr><td><b>Total physical required</b></td><td><b>${fmt(physical)} TB</b></td></tr>`+
+      (window.__nodes?`<tr><td><b>Estimated nodes</b></td><td><b>${window.__nodes}</b></td></tr>`:'')+
+      `</table></div>`;
+  }
+  const sec=(title,pairs)=>{const body=pairs.map(([l,k])=>R(l,d[k])).join(''); return body?`<div class="sumsec"><h4>${title}</h4><table class="sum">${body}</table></div>`:'';};
+  html+=sec('Customer & Contact',[['Company','company'],['Industry','industry'],['Contact','contact'],['Email','email'],['Account team','accountteam'],['Date','date']]);
+  html+=sec('Project',[['Use case','usecase'],['Driver','driver'],['Timeframe','timeframe'],['Horizon (yrs)','termYears'],['Deployment','deploy']]);
+  html+=sec('Sites & Replication',[['Sites','sites'],['Replication','replication'],['Detail','repdetail'],['Bandwidth','bandwidth'],['Multi-tenant','mt']]);
+  html+=sec('Virtual Machines',[['Hypervisor','vm_hypervisor'],['# VMs','vm_count'],['Front-end TB','vm_fetb'],['AGR %','vm_agr'],['DGR %','vm_dgr'],['Retention days','vm_ret'],['Replicate','vm_rep'],['Notes','vm_notes']]);
+  html+=sec('Physical Servers',[['# Servers','phys_count'],['Front-end TB','phys_fetb'],['OS','phys_os'],['BMR','bmr'],['AGR %','phys_agr'],['DGR %','phys_dgr'],['Retention days','phys_ret'],['Replicate','phys_rep']]);
+  html+=sec('Databases',[['Platforms','db_platforms'],['Front-end TB','db_fetb'],['Instances','db_instances'],['SQL topology','db_sqltopo'],['Oracle RAC','db_rac'],['TDE/Compression','db_tde'],['Hosting','db_hosting'],['Method','db_method'],['AGR %','db_agr'],['DGR %','db_dgr'],['Retention days','db_ret'],['Log freq','db_logfreq'],['Replicate','db_rep'],['Notes','db_notes']]);
+  html+=sec('NAS / Unstructured',[['Front-end TB','nas_fetb'],['# Files (M)','nas_files'],['Avg file size','nas_avgsize'],['Vendor','nas_vendor'],['Protocols','nas_proto'],['Perf priority','nasperf'],['AGR %','nas_agr'],['DGR %','nas_dgr'],['Retention days','nas_ret'],['% non-dedupe','nas_nodedupe'],['Read MB/s','nas_read'],['Write MB/s','nas_write']]);
+  html+=sec('Microsoft 365',[['Architecture','m365_arch'],['Directory','m365_dir'],['Users','m365_users'],['Shared mbx','m365_shared'],['Workloads','m365_workloads'],['Front-end TB','m365_fetb'],['AGR %','m365_agr'],['DGR %','m365_dgr'],['Retention days','m365_ret'],['Target','m365_target']]);
+  html+=sec('Cloud / Containers',[['Platforms','cloud_platforms'],['Types','cloud_types'],['K8s','cloud_k8s'],['Front-end TB','cloud_fetb'],['AGR %','cloud_agr'],['DGR %','cloud_dgr'],['Retention days','cloud_ret']]);
+  html+=sec('Archive & LTR',[['Archive?','arch'],['Target','arch_target'],['Policy','arch_policy']]);
+  html+=sec('Security & Compliance',[['Capabilities','sec_caps'],['Frameworks','sec_frameworks'],['RTO','sec_rto']]);
+  html+=sec('Current Environment',[['Solution','cur_solution'],['Existing Cohesity','curcoh'],['Cluster detail','cur_cohdetail'],['Pain points','cur_pain']]);
+  html+=sec('Networking',[['Speed','net_speed'],['NIC','net_nic'],['Port','net_port'],['Jumbo','net_jumbo'],['Multicast','net_mc'],['Open ports','net_ports']]);
+  html+=sec('Hardware',[['Vendor','hw_vendor'],['Lifecycle','hw_lifecycle'],['Rack','hw_rack'],['Tier','hw_tier'],['Notes','final_notes']]);
+  $('#modalBody').innerHTML=html;
+  $('#modal').classList.add('open');
+});
+$('#closeModal').addEventListener('click',()=>$('#modal').classList.remove('open'));
+$('#modal').addEventListener('click',e=>{if(e.target===$('#modal'))$('#modal').classList.remove('open');});
+
+$('#btnExport').addEventListener('click',()=>{
+  recalc();
+  const d=gather();
+  d.__estimate={physicalRequiredTB:+(window.__physical||0).toFixed(2),postReductionBETB:+(window.__betb||0).toFixed(2),
+    frontEndTB:+(window.__totFetb||0).toFixed(2),bufferPct:Math.round((window.__buffer||0)*100),
+    resiliencyUsablePct:Math.round((window.__resUsable||0)*100),estimatedNodes:window.__nodes||null};
+  const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='cohesity-sizing-'+((d.company||'customer').replace(/[^a-z0-9]/gi,'-'))+'.json';
+  a.click();
+});
+$('#btnPrint').addEventListener('click',()=>{ $('#btnSummary').click(); setTimeout(()=>window.print(),200); });
+
+const secs=$$('main section.card');
+window.addEventListener('scroll',()=>{
+  let cur=secs[0].id;
+  secs.forEach(s=>{ if(window.scrollY+140>=s.offsetTop)cur=s.id; });
+  $$('#nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+});
+
+recalc(); updateProgress();
+</script>
+</body>
+</html>
