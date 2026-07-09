@@ -219,7 +219,7 @@
           <select data-key="vm_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Bi-directional</option><option>Yes - Multiple sites</option></select></div>
       </div>
       <div class="field full" style="margin-top:12px"><label class="q">Notes (large VMs, RDMs, app-consistency needs, etc.)</label><textarea data-key="vm_notes"></textarea>
-      <p class="hint">Tip: attach an RVTools export for VMware to speed this up &mdash; <a href="https://www.robware.net/home" target="_blank" rel="noopener">robware.net</a></p></div>
+      <p class="hint">Tip: attach an RVTools export for VMware to speed this up &mdash; <a href="https://www.dell.com/support/rvtools" target="_blank" rel="noopener">official Dell RVTools download</a></p></div>
       </div>
     </section>
 
@@ -481,14 +481,15 @@
         <div class="est-row"><span>÷ resiliency usable (<span id="estResPct">50</span>%)</span><b id="estRaw">0 TB</b></div>
 
         <details class="assump">
-          <summary>Adjust sizing assumptions</summary>
+          <summary>Adjust planning assumptions</summary>
+          <div style="font-size:11px;color:var(--muted);margin:6px 0 2px">Illustrative, editable planning assumptions only &mdash; not official Cohesity figures.</div>
           <div class="arow"><span>VM data reduction ratio</span><input type="number" step="0.1" id="dr_vm" value="4"></div>
           <div class="arow"><span>DB data reduction ratio</span><input type="number" step="0.1" id="dr_db" value="2.5"></div>
           <div class="arow"><span>NAS data reduction ratio</span><input type="number" step="0.1" id="dr_nas" value="1.8"></div>
           <div class="arow"><span>Physical data reduction ratio</span><input type="number" step="0.1" id="dr_phys" value="3"></div>
           <div class="arow"><span>M365 data reduction ratio</span><input type="number" step="0.1" id="dr_m365" value="1.5"></div>
           <div class="arow"><span>Cloud data reduction ratio</span><input type="number" step="0.1" id="dr_cloud" value="2.5"></div>
-          <div class="arow"><span>Buffer % (WST default 20, min 15)</span><input type="number" step="1" id="buffer" value="20"></div>
+          <div class="arow"><span>Buffer % (planning reserve)</span><input type="number" step="1" id="buffer" value="20"></div>
           <div class="arow"><span>Resiliency</span><select id="resiliency" style="width:150px;padding:5px 7px;border:1px solid var(--line);border-radius:6px">
             <option value="0.50" selected>RF2 &mdash; 50% usable</option>
             <option value="0.67">EC 2:1 &mdash; 67% usable</option>
@@ -500,7 +501,7 @@
           <div class="arow"><span>Default daily change %</span><input type="number" step="0.5" id="defDgr" value="3"></div>
         </details>
 
-        <div class="disclaimer">Uses the WST field estimation chain: FETB &times; (1+AGR)^Yrs &times; (1+DCR&times;Ret) &divide; Reduction &divide; (1&minus;Buffer%) &divide; ResiliencyUsable%. Rough planning estimate only &mdash; run the official WST for final quotes (databases, periodic fulls, replication, CloudArchive, FortKnox, strict backup windows).</div>
+        <div class="disclaimer">Rough planning estimate only, not a quote. Model: source data &times; growth &times; (1 + daily change &times; retention days) &divide; data reduction &divide; (1 &minus; buffer) &divide; resiliency usable %. Your Cohesity account team produces the official sizing, especially for databases, replication, long-term archive, and strict backup windows.</div>
 
         <div class="btns">
           <button class="btn primary" id="btnSummary">View summary &amp; recommendation</button>
@@ -548,7 +549,7 @@ function workloadActive(w){const sec=document.querySelector(`[data-workload="${w
 function recalc(){
   const years=parseFloat($('[data-key=termYears]').value)||3;
   $('#estYears').textContent=years;
-  const buffer=Math.min(Math.max(num($('#buffer')),0),95)/100;      // WST buffer, divide by (1-buffer)
+  const buffer=Math.min(Math.max(num($('#buffer')),0),95)/100;      // buffer reserve, divide by (1-buffer)
   const resUsable=parseFloat($('#resiliency').value)||0.5;          // resiliency usable fraction
   const nodeRaw=num($('#nodeRaw'));
   const defRet=num($('#defRet'))||30;
