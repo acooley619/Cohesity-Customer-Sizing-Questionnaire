@@ -371,7 +371,7 @@
             <label class="chk"><input type="checkbox" value="SharePoint Online">SharePoint Online</label>
             <label class="chk"><input type="checkbox" value="Teams">Teams</label>
           </div></div>
-        <div class="field"><label class="q">Total front-end M365 data (TB) &mdash; mail + OneDrive + SharePoint<span class="req">*</span></label><input type="number" min="0" step="0.1" data-fetb="m365" data-key="m365_fetb" data-reqif></div>
+        <div class="field"><label class="q">Total front-end M365 data (TB) &mdash; optional, only if stored on an on-prem cluster</label><input type="number" min="0" step="0.1" data-fetb="m365" data-key="m365_fetb"></div>
         <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="m365" data-key="m365_agr" placeholder="%"></div>
         <div class="field"><label class="q">Daily change rate (DCR %)</label><input type="number" min="0" max="100" data-dgr="m365" data-key="m365_dgr" placeholder="%"></div>
         <div class="field"><label class="q">Retention (days on Cohesity)</label><input type="number" min="0" data-ret="m365" data-key="m365_ret" placeholder="days"></div>
@@ -384,6 +384,7 @@
       <div style="margin-top:12px">
         <button type="button" class="minibtn" id="btnM365">Estimate front-end TB from users</button>
         <span class="hint" style="margin-left:8px">Uses users &times; avg mailbox + OneDrive sizes (set under assumptions)</span>
+        <p class="hint" style="margin-top:8px">Note: Cohesity licenses Microsoft 365 SaaS protection by <b>user/mailbox count</b> (regular, guest, or disabled users as applicable) &mdash; not by FETB/BETB. M365 therefore does not count toward cluster capacity here; the front-end TB field is optional and only used if you store M365 backups on an on-prem Cohesity cluster.</p>
       </div>
       </div>
     </section>
@@ -524,6 +525,7 @@
         <div class="pool dr"><span>Replication / DR pool</span><b id="estDR">0 TB</b></div>
         <div class="pool arch"><span>Cloud archive pool (est.)</span><b id="estArch">off</b></div>
         <div class="pool tp"><span>Req. daily ingest (backup window)</span><b id="estIngest">&mdash;</b></div>
+        <div class="pool" style="background:#eef7ff;border:1px solid #cfe4fb"><span>Microsoft 365 (licensed by user/mailbox)</span><b id="estM365">n/a</b></div>
 
         <div class="warnbox" id="warnings"></div>
 
@@ -624,6 +626,7 @@ function recalc(){
     if(!workloadActive(w))return;
     const fetb=num(document.querySelector(`[data-fetb="${w}"]`));
     if(fetb<=0)return;
+    if(w==='m365'){var _mt=document.querySelector('[data-key=m365_target]'); if(!(_mt&&_mt.value==='On-prem Cohesity cluster'))return;}
     var agrEl=document.querySelector(`[data-agr="${w}"]`); var agr=((agrEl&&agrEl.value.trim()!=='')?num(agrEl):defAgr)/100;
     var dgrEl=document.querySelector(`[data-dgr="${w}"]`); var dgr=(dgrEl&&dgrEl.value.trim()!=='')?num(dgrEl):defDgr; const dgrF=dgr/100;
     let ret=num(document.querySelector(`[data-ret="${w}"]`)); if(ret<=0)ret=defRet;
@@ -642,6 +645,10 @@ function recalc(){
     const cntEl=document.querySelector(`[data-workload="${w}"] [data-count]`);
     if(cntEl && num(cntEl)>0 && fetb<=0) warn.push(`${labels[w]}: a count is set but front-end TB is blank.`);
   });
+  var _m365Active=workloadActive('m365');
+  var _mt2=document.querySelector('[data-key=m365_target]'); var _m365OnPrem=!!(_mt2&&_mt2.value==='On-prem Cohesity cluster');
+  var _m365Users=_m365Active?(num(document.querySelector('[data-key=m365_users]'))+num(document.querySelector('[data-key=m365_shared]'))):0;
+  var _mEl=$('#estM365'); if(_mEl){ _mEl.textContent=_m365Active?(_m365Users+' users'+(_m365OnPrem?' \u00b7 in capacity':' \u00b7 licensed only')):'n/a'; }
   const buffered=totBETB/(1-buffer);
   const physical=buffered/resUsable;
   const nodes=(nodeRaw>0 && physical>0)?Math.ceil(physical/nodeRaw):null;
@@ -674,7 +681,7 @@ function recalc(){
 
   Object.assign(window,{__physical:physical,__bd:bd,__totFetb:totFetb,__buffer:buffer,__resUsable:resUsable,
     __betb:totBETB,__buffered:buffered,__nodes:nodes,__dr:drPhysical,__arch:archivePool,__archOn:archOn,
-    __ingestTB:dailyIngestTB,__ingestMBs:ingestRateMBs,__years:years});
+    __ingestTB:dailyIngestTB,__ingestMBs:ingestRateMBs,__years:years,__m365Users:_m365Users,__m365OnPrem:_m365OnPrem,__m365Active:_m365Active});
   saveState();
 }
 
@@ -750,7 +757,7 @@ const SAMPLE={
   nasperf:"Throughput", nas_agr:"10", nas_dgr:"2", nas_ret:"30", nas_nd:"15", nas_rep:"No",
   m365_arch:"Fully in M365 cloud", m365_dir:"Entra ID / Azure AD only", m365_users:"3000",
   m365_workloads:["Exchange Online","OneDrive","SharePoint Online"], m365_fetb:"40",
-  m365_agr:"10", m365_dgr:"2", m365_ret:"365", m365_target:"On-prem Cohesity cluster",
+  m365_agr:"10", m365_dgr:"2", m365_ret:"365", m365_target:"As-a-Service (DMaaS)",
   arch:"Yes", arch_target:"Azure Blob", arch_policy:"30 days on cluster, monthly to cloud retained 7 years",
   sec_caps:["Immutable snapshots (DataLock)","Ransomware / anomaly detection","Encryption at rest & in flight"],
   sec_frameworks:"PCI-DSS, SOX", cur_solution:"Veeam", curcoh:"No",
@@ -831,6 +838,7 @@ $('#btnSummary').addEventListener('click',()=>{
       (window.__nodes?`<tr><td>Estimated nodes (primary)</td><td>${window.__nodes}</td></tr>`:'')+
       `</table></div>`;
   }
+  if(window.__m365Active){ html+='<div class="sumsec" style="font-size:12.5px;color:var(--slate)"><b>Microsoft 365 licensing:</b> licensed by user/mailbox count (not FETB) &mdash; '+window.__m365Users+' users'+(window.__m365OnPrem?'. Stored on-prem, so its data is also included in the capacity above.':'. Not included in the cluster capacity above.')+'</div>'; }
   const sec=(title,pairs)=>{const body=pairs.map(([l,k])=>R(l,d[k])).join(''); return body?`<div class="sumsec"><h4>${title}</h4><table class="sum">${body}</table></div>`:'';};
   html+=sec('Customer & Contact',[['Company','company'],['Industry','industry'],['Contact','contact'],['Email','email'],['Account team','accountteam'],['Date','date']]);
   html+=sec('Project',[['Use case','usecase'],['Driver','driver'],['Timeframe','timeframe'],['Horizon (yrs)','termYears'],['Deployment','deploy']]);
