@@ -25,7 +25,8 @@
   .progwrap{margin-top:16px;background:rgba(255,255,255,.18);border-radius:20px;height:10px;overflow:hidden;max-width:520px}
   .progbar{height:100%;width:0;background:#fff;border-radius:20px;transition:width .4s ease}
   .progtext{font-size:12.5px;margin-top:6px;opacity:.95}
-  .layout{display:grid;grid-template-columns:230px minmax(0,1fr) 320px;gap:22px;max-width:1400px;margin:22px auto;padding:0 22px;align-items:start}
+  .saveflag{position:absolute;top:22px;right:28px;font-size:11.5px;opacity:.85}
+  .layout{display:grid;grid-template-columns:230px minmax(0,1fr) 330px;gap:22px;max-width:1440px;margin:22px auto;padding:0 22px;align-items:start}
   nav.side{position:sticky;top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;box-shadow:var(--shadow);max-height:calc(100vh - 32px);overflow:auto}
   nav.side a{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;color:var(--slate);text-decoration:none;font-size:13px;font-weight:500}
   nav.side a:hover{background:var(--green-l);color:var(--green-d)}
@@ -43,12 +44,15 @@
   .field.full{grid-column:1/-1}
   label.q{font-size:13.5px;font-weight:600;color:var(--slate)}
   label.q .req{color:var(--red);margin-left:3px}
+  label.q .info{display:inline-block;width:15px;height:15px;line-height:15px;text-align:center;border-radius:50%;background:var(--line);color:var(--slate);font-size:10px;font-weight:700;cursor:help;margin-left:4px}
   .hint{font-size:12px;color:var(--muted);margin-top:-1px}
   input[type=text],input[type=number],input[type=email],select,textarea{
     width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:14px;background:#fff;color:var(--ink);font-family:inherit;transition:border .15s,box-shadow .15s}
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-l)}
   textarea{min-height:64px;resize:vertical}
   input.invalid{border-color:var(--red);box-shadow:0 0 0 3px #fde8e4}
+  .minibtn{align-self:flex-start;background:#fff;border:1px solid var(--line);color:var(--green-d);border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+  .minibtn:hover{border-color:var(--green)}
   .pills{display:flex;flex-wrap:wrap;gap:8px}
   .pill{position:relative}
   .pill input{position:absolute;opacity:0;width:0;height:0}
@@ -81,23 +85,34 @@
   .est-row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px dashed var(--line)}
   .est-row:last-child{border-bottom:none}
   .est-row b{color:var(--ink)}
+  .est-sub{margin-top:12px;padding-top:6px;border-top:2px solid var(--line)}
   .breakdown{margin-top:10px}
   .breakdown .est-row span:first-child{color:var(--slate)}
+  .pool{display:flex;justify-content:space-between;font-size:13px;padding:8px 10px;border-radius:8px;margin-top:6px}
+  .pool.dr{background:#eef4ff;border:1px solid #d3e0fb}
+  .pool.arch{background:#fef6ec;border:1px solid #f6e2bd}
+  .pool.tp{background:#f3f0fb;border:1px solid #e0d8f4}
+  .pool b{color:var(--ink)}
+  .warnbox{margin-top:12px;font-size:12px}
+  .warn{background:#fff3f0;border:1px solid #f6c9bd;color:#a63a26;border-radius:8px;padding:8px 10px;margin-top:6px;display:flex;gap:7px}
+  .warn:before{content:"!";font-weight:800;color:var(--red)}
   .disclaimer{font-size:11px;color:var(--muted);margin-top:12px;background:#fff8ec;border:1px solid #f6e2bd;border-radius:8px;padding:9px 11px}
   .assump{margin-top:12px}
   .assump summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--slate)}
   .assump .arow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;font-size:12.5px}
   .assump .arow input{width:70px;padding:5px 7px;text-align:right}
+  .assump .arow select{width:160px;padding:5px 7px}
   .btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}
   .btn{border:none;border-radius:9px;padding:11px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
   .btn.primary{background:var(--green);color:#fff}
   .btn.primary:hover{background:var(--green-d)}
   .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--slate)}
   .btn.ghost:hover{border-color:var(--green);color:var(--green-d)}
+  .btn.tiny{padding:8px;font-size:12.5px}
   .metafoot{color:var(--muted);font-size:12px;text-align:center;padding:8px 22px 40px}
   .modal{position:fixed;inset:0;background:rgba(15,30,46,.55);display:none;align-items:flex-start;justify-content:center;z-index:50;padding:30px 16px;overflow:auto}
   .modal.open{display:flex}
-  .modal-inner{background:#fff;border-radius:14px;max-width:900px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .modal-inner{background:#fff;border-radius:14px;max-width:920px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
   .modal-head{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;border-radius:14px 14px 0 0}
   .modal-head h2{margin:0;font-size:19px}
   .modal-body{padding:22px 24px}
@@ -105,13 +120,17 @@
   .sumsec{margin-bottom:20px}
   .sumsec h4{margin:0 0 8px;font-size:14px;color:var(--green-d);border-bottom:2px solid var(--green-l);padding-bottom:4px}
   table.sum{width:100%;border-collapse:collapse;font-size:13px}
-  table.sum td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.sum td,table.sum th{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
   table.sum td:first-child{color:var(--slate);width:52%}
   table.sum td:last-child{font-weight:600}
   .rec-box{background:var(--green-l);border:1px solid #cdead9;border-radius:10px;padding:16px;margin-bottom:18px}
   .rec-box .bignum{font-size:28px}
+  .scen{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0 4px}
+  .scen div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center}
+  .scen div span{display:block;font-size:11px;color:var(--muted)}
+  .scen div b{font-size:15px;color:var(--green-d)}
   @media print{
-    nav.side,aside.est,header.top .progwrap,.enable .switch,.btns{display:none!important}
+    nav.side,aside.est,header.top .progwrap,.enable .switch,.btns,.minibtn{display:none!important}
     .layout{display:block;max-width:100%}
     section.card{break-inside:avoid;box-shadow:none}
     .modal{position:static;background:none;display:block;padding:0}
@@ -129,6 +148,7 @@
       <p>Interactive data protection sizing worksheet &middot; tell us about your environment and we'll size the right solution</p>
     </div>
   </div>
+  <div class="saveflag" id="saveflag"></div>
   <div class="progwrap"><div class="progbar" id="progbar"></div></div>
   <div class="progtext" id="progtext">0% complete</div>
 </header>
@@ -146,8 +166,8 @@
         <div class="field"><label class="q">Industry / vertical</label><input type="text" data-key="industry" placeholder="e.g. Financial services"></div>
         <div class="field"><label class="q">Primary contact name<span class="req">*</span></label><input type="text" data-req data-key="contact"></div>
         <div class="field"><label class="q">Contact email<span class="req">*</span></label><input type="email" data-req data-key="email"></div>
-        <div class="field"><label class="q">Cohesity account team / partner</label><input type="text" data-key="accountteam"></div>
-        <div class="field"><label class="q">Date completed</label><input type="text" data-key="date" placeholder="YYYY-MM-DD"></div>
+        <div class="field"><label class="q">Cohesity account team / partner (email routes "Email results")</label><input type="text" data-key="accountteam"></div>
+        <div class="field"><label class="q">Date completed</label><input type="date" data-key="date"></div>
       </div>
     </section>
 
@@ -169,7 +189,7 @@
         </div>
       </div>
       <div class="fgrid" style="margin-top:14px">
-        <div class="field"><label class="q">What is driving this project? (compelling event)</label><input type="text" data-key="driver" placeholder="e.g. Veeam renewal, ransomware audit, EOL hardware"></div>
+        <div class="field"><label class="q">What is driving this project? (compelling event)</label><input type="text" data-key="driver" placeholder="e.g. renewal, ransomware audit, EOL hardware"></div>
         <div class="field"><label class="q">Target deployment timeframe</label>
           <select data-key="timeframe"><option value="">Select...</option><option>Immediate (&lt; 1 month)</option><option>1-3 months</option><option>3-6 months</option><option>6-12 months</option><option>Evaluating / no date</option></select></div>
         <div class="field"><label class="q">Sizing horizon (grow the solution for how many years?)<span class="req">*</span></label>
@@ -210,16 +230,19 @@
         <div class="field"><label class="q">Hypervisor platform(s)</label>
           <select data-key="vm_hypervisor"><option value="">Select...</option><option>VMware vSphere 8.x</option><option>VMware vSphere 7.x</option><option>VMware vSphere 6.x</option><option>Microsoft Hyper-V</option><option>Nutanix AHV</option><option>Red Hat Virtualization / OpenShift Virt</option><option>KVM / Proxmox</option><option>Multiple (list in notes)</option></select></div>
         <div class="field"><label class="q">Number of VMs to protect</label><input type="number" min="0" data-key="vm_count" data-count></div>
-        <div class="field"><label class="q">Total front-end data across VMs (TB)<span class="req">*</span></label><input type="number" min="0" step="0.1" data-fetb="vm" data-key="vm_fetb" data-reqif></div>
+        <div class="field"><label class="q">Total front-end data across VMs (TB)<span class="req">*</span><span class="info" title="Front-end TB = actual source data consumed, not provisioned">i</span></label><input type="number" min="0" step="0.1" data-fetb="vm" data-key="vm_fetb" data-reqif></div>
         <div class="field"><label class="q">% of environment virtualized</label><input type="number" min="0" max="100" data-key="vm_pctvirt" placeholder="%"></div>
-        <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="vm" data-key="vm_agr" placeholder="%"></div>
-        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="vm" data-key="vm_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Annual growth rate (AGR %)<span class="info" title="Use maximum expected annual growth; drives storage and throughput. Typical 5-10%.">i</span></label><input type="number" min="0" data-agr="vm" data-key="vm_agr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DCR %)<span class="info" title="New or modified source data per 24h; drives daily ingest and retained change. Typical 2-5%.">i</span></label><input type="number" min="0" max="100" data-dgr="vm" data-key="vm_dgr" placeholder="%"></div>
         <div class="field"><label class="q">Retention on primary cluster (days)</label><input type="number" min="0" data-ret="vm" data-key="vm_ret" placeholder="days"></div>
+        <div class="field"><label class="q">% non-dedupable<span class="info" title="Encrypted / pre-compressed / media data sized at 1:1">i</span></label><input type="number" min="0" max="100" data-nd="vm" data-key="vm_nd" placeholder="%"></div>
         <div class="field"><label class="q">Replicate VMs to another site?</label>
-          <select data-key="vm_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Bi-directional</option><option>Yes - Multiple sites</option></select></div>
+          <select data-rep="vm" data-key="vm_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Bi-directional</option><option>Yes - Multiple sites</option></select></div>
       </div>
       <div class="field full" style="margin-top:12px"><label class="q">Notes (large VMs, RDMs, app-consistency needs, etc.)</label><textarea data-key="vm_notes"></textarea>
-      <p class="hint">Tip: attach an RVTools export for VMware to speed this up &mdash; <a href="https://www.dell.com/support/rvtools" target="_blank" rel="noopener">official Dell RVTools download</a></p></div>
+      <p class="hint">Speed this up: import an RVTools/CSV export (rows = VMs, a capacity column is summed) &mdash; official download: <a href="https://www.dell.com/en-us/shop/vmware/sl/rvtools" target="_blank" rel="noopener">Dell RVTools</a></p>
+      <button type="button" class="minibtn" id="btnRV">Import RVTools / CSV for VMs</button>
+      <input type="file" id="fileRV" accept=".csv,text/csv" style="display:none"></div>
       </div>
     </section>
 
@@ -242,10 +265,11 @@
         <div class="field"><label class="q">Need Bare Metal Recovery (BMR)?</label>
           <div class="pills" data-radio="bmr"><span class="pill"><input type="radio" name="bmr" id="bmr1" value="No"><label for="bmr1">No</label></span><span class="pill"><input type="radio" name="bmr" id="bmr2" value="Yes"><label for="bmr2">Yes</label></span></div></div>
         <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="phys" data-key="phys_agr" placeholder="%"></div>
-        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="phys" data-key="phys_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DCR %)</label><input type="number" min="0" max="100" data-dgr="phys" data-key="phys_dgr" placeholder="%"></div>
         <div class="field"><label class="q">Retention (days)</label><input type="number" min="0" data-ret="phys" data-key="phys_ret" placeholder="days"></div>
+        <div class="field"><label class="q">% non-dedupable</label><input type="number" min="0" max="100" data-nd="phys" data-key="phys_nd" placeholder="%"></div>
         <div class="field"><label class="q">Replicate to another site?</label>
-          <select data-key="phys_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Multiple sites</option></select></div>
+          <select data-rep="phys" data-key="phys_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Multiple sites</option></select></div>
       </div>
       </div>
     </section>
@@ -276,19 +300,20 @@
           <select data-key="db_sqltopo"><option value="">Select / N/A</option><option>Stand-alone</option><option>Failover Cluster (FCI)</option><option>Always On AG</option><option>Mixed</option></select></div>
         <div class="field"><label class="q">Oracle RAC in use?</label>
           <select data-key="db_rac"><option value="">Select / N/A</option><option>No</option><option>Yes</option></select></div>
-        <div class="field"><label class="q">Oracle TDE / compression?</label>
+        <div class="field"><label class="q">Oracle TDE / compression?<span class="info" title="TDE-encrypted or compressed DBs are non-dedupable — set % non-dedupable to 100">i</span></label>
           <select data-key="db_tde"><option value="">Select / N/A</option><option>None</option><option>TDE encryption</option><option>Compression</option><option>Both</option></select></div>
         <div class="field"><label class="q">Servers physical, virtual, or both?</label>
           <select data-key="db_hosting"><option value="">Select...</option><option>Physical</option><option>Virtual</option><option>Both</option></select></div>
         <div class="field"><label class="q">Backup method preference</label>
           <select data-key="db_method"><option value="">Select...</option><option>Cohesity agent (integrated)</option><option>DB-native dump to Cohesity</option><option>RMAN / native to NAS</option><option>Not sure</option></select></div>
         <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="db" data-key="db_agr" placeholder="%"></div>
-        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="db" data-key="db_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DCR %)</label><input type="number" min="0" max="100" data-dgr="db" data-key="db_dgr" placeholder="%"></div>
         <div class="field"><label class="q">Retention - data (days)</label><input type="number" min="0" data-ret="db" data-key="db_ret" placeholder="days"></div>
+        <div class="field"><label class="q">% non-dedupable</label><input type="number" min="0" max="100" data-nd="db" data-key="db_nd" placeholder="%"></div>
         <div class="field"><label class="q">Log backup frequency</label>
           <select data-key="db_logfreq"><option value="">Select / N/A</option><option>Every 15 min</option><option>Hourly</option><option>Every 4 hours</option><option>Daily</option><option>No log backups</option></select></div>
         <div class="field"><label class="q">Replicate DBs to another site?</label>
-          <select data-key="db_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Multiple sites</option></select></div>
+          <select data-rep="db" data-key="db_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Multiple sites</option></select></div>
       </div>
       <div class="field full" style="margin-top:12px"><label class="q">Notes (largest DBs, DataGuard, ASM/filesystem, RTO for restores)</label><textarea data-key="db_notes"></textarea></div>
       </div>
@@ -314,9 +339,11 @@
         <div class="field"><label class="q">Performance priority</label>
           <div class="pills" data-radio="nasperf"><span class="pill"><input type="radio" name="nasperf" id="np1" value="Throughput"><label for="np1">Throughput</label></span><span class="pill"><input type="radio" name="nasperf" id="np2" value="IOPS"><label for="np2">IOPS</label></span><span class="pill"><input type="radio" name="nasperf" id="np3" value="Both"><label for="np3">Both</label></span></div></div>
         <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="nas" data-key="nas_agr" placeholder="%"></div>
-        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="nas" data-key="nas_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DCR %)</label><input type="number" min="0" max="100" data-dgr="nas" data-key="nas_dgr" placeholder="%"></div>
         <div class="field"><label class="q">Retention (days)</label><input type="number" min="0" data-ret="nas" data-key="nas_ret" placeholder="days"></div>
-        <div class="field"><label class="q">% of data NOT deduplicable (pre-compressed/encrypted)</label><input type="number" min="0" max="100" data-key="nas_nodedupe" placeholder="%"></div>
+        <div class="field"><label class="q">% non-dedupable / not reducible</label><input type="number" min="0" max="100" data-nd="nas" data-key="nas_nd" placeholder="%"></div>
+        <div class="field"><label class="q">Replicate to another site?</label>
+          <select data-rep="nas" data-key="nas_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Multiple sites</option></select></div>
       </div>
       <div class="fgrid" style="margin-top:12px">
         <div class="field"><label class="q">READ throughput requirement (MB/s)</label><input type="number" min="0" data-key="nas_read"></div>
@@ -346,10 +373,17 @@
           </div></div>
         <div class="field"><label class="q">Total front-end M365 data (TB) &mdash; mail + OneDrive + SharePoint<span class="req">*</span></label><input type="number" min="0" step="0.1" data-fetb="m365" data-key="m365_fetb" data-reqif></div>
         <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="m365" data-key="m365_agr" placeholder="%"></div>
-        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="m365" data-key="m365_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DCR %)</label><input type="number" min="0" max="100" data-dgr="m365" data-key="m365_dgr" placeholder="%"></div>
         <div class="field"><label class="q">Retention (days on Cohesity)</label><input type="number" min="0" data-ret="m365" data-key="m365_ret" placeholder="days"></div>
+        <div class="field"><label class="q">% non-dedupable</label><input type="number" min="0" max="100" data-nd="m365" data-key="m365_nd" placeholder="%"></div>
         <div class="field"><label class="q">Store M365 backups where?</label>
           <select data-key="m365_target"><option value="">Select...</option><option>On-prem Cohesity cluster</option><option>Cohesity Cloud Edition</option><option>As-a-Service (DMaaS)</option></select></div>
+        <div class="field"><label class="q">Replicate to another site?</label>
+          <select data-rep="m365" data-key="m365_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Multiple sites</option></select></div>
+      </div>
+      <div style="margin-top:12px">
+        <button type="button" class="minibtn" id="btnM365">Estimate front-end TB from users</button>
+        <span class="hint" style="margin-left:8px">Uses users &times; avg mailbox + OneDrive sizes (set under assumptions)</span>
       </div>
       </div>
     </section>
@@ -378,8 +412,11 @@
           <select data-key="cloud_k8s"><option value="">Select / N/A</option><option>EKS</option><option>AKS</option><option>GKE</option><option>OpenShift</option><option>Rancher / vanilla k8s</option><option>Tanzu</option></select></div>
         <div class="field"><label class="q">Total front-end cloud/container data (TB)</label><input type="number" min="0" step="0.1" data-fetb="cloud" data-key="cloud_fetb"></div>
         <div class="field"><label class="q">Annual growth rate (AGR %)</label><input type="number" min="0" data-agr="cloud" data-key="cloud_agr" placeholder="%"></div>
-        <div class="field"><label class="q">Daily change rate (DGR %)</label><input type="number" min="0" max="100" data-dgr="cloud" data-key="cloud_dgr" placeholder="%"></div>
+        <div class="field"><label class="q">Daily change rate (DCR %)</label><input type="number" min="0" max="100" data-dgr="cloud" data-key="cloud_dgr" placeholder="%"></div>
         <div class="field"><label class="q">Retention (days)</label><input type="number" min="0" data-ret="cloud" data-key="cloud_ret" placeholder="days"></div>
+        <div class="field"><label class="q">% non-dedupable</label><input type="number" min="0" max="100" data-nd="cloud" data-key="cloud_nd" placeholder="%"></div>
+        <div class="field"><label class="q">Replicate to another site?</label>
+          <select data-rep="cloud" data-key="cloud_rep"><option value="">Select...</option><option>No</option><option>Yes - Primary to DR</option><option>Yes - Multiple sites</option></select></div>
       </div>
       </div>
     </section>
@@ -394,6 +431,7 @@
           <select data-key="arch_target"><option value="">Select / N/A</option><option>AWS S3 / Glacier</option><option>Azure Blob</option><option>Google Cloud Storage</option><option>S3-compatible on-prem</option><option>Tape</option></select></div>
         <div class="field full"><label class="q">Long-term retention policy</label><textarea data-key="arch_policy" placeholder="e.g. 30 days on cluster, then monthly to cloud retained 7 years"></textarea></div>
       </div>
+      <p class="hint">Archive pool size is estimated on the right; tune long-term copies and archive reduction under "Adjust planning assumptions."</p>
     </section>
 
     <section class="card" id="s-security" data-title="Security & Compliance">
@@ -470,15 +508,24 @@
     <div class="est-card">
       <div class="est-head"><h3>Live Sizing Estimate</h3><p>Updates as you fill in the form</p></div>
       <div class="est-body">
-        <div class="est-label">Est. physical capacity required</div>
+        <div class="est-label">Est. physical capacity required (primary)</div>
         <div class="bignum" id="estPhysical">0 <small>TB</small></div>
         <div class="est-row" style="margin-top:4px"><span>Estimated nodes (if node raw TB set)</span><b id="estNodes">&mdash;</b></div>
         <div class="breakdown" id="breakdown"></div>
-        <div class="est-row" style="margin-top:8px"><span>Total front-end (source) data</span><b id="estFetb">0 TB</b></div>
-        <div class="est-row"><span>Grown (<span id="estYears">3</span> yr) + retained logical</span><b id="estLogical">0 TB</b></div>
-        <div class="est-row"><span>After dedupe &amp; compression (BETB)</span><b id="estReduced">0 TB</b></div>
-        <div class="est-row"><span>+ buffer (÷ 1&minus;<span id="estBuf">20</span>%)</span><b id="estBuffered">0 TB</b></div>
-        <div class="est-row"><span>÷ resiliency usable (<span id="estResPct">50</span>%)</span><b id="estRaw">0 TB</b></div>
+
+        <div class="est-sub">
+          <div class="est-row"><span>Total front-end (source) data</span><b id="estFetb">0 TB</b></div>
+          <div class="est-row"><span>Grown (<span id="estYears">3</span> yr) + retained logical</span><b id="estLogical">0 TB</b></div>
+          <div class="est-row"><span>After dedupe &amp; compression (BETB)</span><b id="estReduced">0 TB</b></div>
+          <div class="est-row"><span>+ buffer (÷ 1&minus;<span id="estBuf">20</span>%)</span><b id="estBuffered">0 TB</b></div>
+          <div class="est-row"><span>÷ resiliency usable (<span id="estResPct">50</span>%)</span><b id="estRaw">0 TB</b></div>
+        </div>
+
+        <div class="pool dr"><span>Replication / DR pool</span><b id="estDR">0 TB</b></div>
+        <div class="pool arch"><span>Cloud archive pool (est.)</span><b id="estArch">off</b></div>
+        <div class="pool tp"><span>Req. daily ingest (backup window)</span><b id="estIngest">&mdash;</b></div>
+
+        <div class="warnbox" id="warnings"></div>
 
         <details class="assump">
           <summary>Adjust planning assumptions</summary>
@@ -490,30 +537,44 @@
           <div class="arow"><span>M365 data reduction ratio</span><input type="number" step="0.1" id="dr_m365" value="1.5"></div>
           <div class="arow"><span>Cloud data reduction ratio</span><input type="number" step="0.1" id="dr_cloud" value="2.5"></div>
           <div class="arow"><span>Buffer % (planning reserve)</span><input type="number" step="1" id="buffer" value="20"></div>
-          <div class="arow"><span>Resiliency</span><select id="resiliency" style="width:150px;padding:5px 7px;border:1px solid var(--line);border-radius:6px">
-            <option value="0.50" selected>RF2 &mdash; 50% usable</option>
-            <option value="0.67">EC 2:1 &mdash; 67% usable</option>
-            <option value="0.67">EC 4:2 &mdash; 67% usable</option>
-            <option value="0.71">EC 5:2 &mdash; 71% usable</option>
+          <div class="arow"><span>Resiliency</span><select id="resiliency">
+            <option value="0.50" data-min="3" selected>RF2 &mdash; 50% usable</option>
+            <option value="0.67" data-min="4">EC 2:1 &mdash; 67% usable</option>
+            <option value="0.67" data-min="6">EC 4:2 &mdash; 67% usable</option>
+            <option value="0.71" data-min="7">EC 5:2 &mdash; 71% usable</option>
           </select></div>
           <div class="arow"><span>Node raw TB (optional &rarr; node est.)</span><input type="number" step="1" id="nodeRaw" placeholder="e.g. 46"></div>
+          <div class="arow"><span>Backup window (hours/day)</span><input type="number" step="0.5" id="window" value="8"></div>
+          <div class="arow"><span>Archive: long-term full copies</span><input type="number" step="1" id="archCopies" value="12"></div>
+          <div class="arow"><span>Archive reduction ratio</span><input type="number" step="0.1" id="archRR" value="2"></div>
+          <div class="arow"><span>Archive: % of front-end tiered</span><input type="number" step="1" id="archPct" value="100"></div>
           <div class="arow"><span>Default retention (days)</span><input type="number" step="1" id="defRet" value="30"></div>
-          <div class="arow"><span>Default daily change %</span><input type="number" step="0.5" id="defDgr" value="3"></div>
+          <div class="arow"><span>Default daily change % (typ. 2-5)</span><input type="number" step="0.5" id="defDgr" value="3"></div>
+          <div class="arow"><span>Default growth % (typ. 5-10)</span><input type="number" step="0.5" id="defAgr" value="7"></div>
+          <div class="arow" style="margin-top:8px"><span>M365 avg mailbox (GB)</span><input type="number" step="0.5" id="mbSize" value="2"></div>
+          <div class="arow"><span>M365 avg OneDrive (GB)</span><input type="number" step="0.5" id="odSize" value="5"></div>
         </details>
 
-        <div class="disclaimer">Rough planning estimate only, not a quote. Model: source data &times; growth &times; (1 + daily change &times; retention days) &divide; data reduction &divide; (1 &minus; buffer) &divide; resiliency usable %. Your Cohesity account team produces the official sizing, especially for databases, replication, long-term archive, and strict backup windows.</div>
+        <div class="disclaimer">Rough planning estimate only, not a quote. Model: source data &times; growth &times; (1 + daily change &times; retention days) &divide; data reduction &divide; (1 &minus; buffer) &divide; resiliency usable %, with a non-dedupable carve-out sized at 1:1. Your Cohesity account team produces the official sizing, especially for databases, replication, long-term archive, and strict backup windows.</div>
 
         <div class="btns">
           <button class="btn primary" id="btnSummary">View summary &amp; recommendation</button>
-          <button class="btn ghost" id="btnExport">Download responses (.json)</button>
-          <button class="btn ghost" id="btnPrint">Print / Save as PDF</button>
+          <button class="btn ghost tiny" id="btnSample">Load sample data</button>
+          <button class="btn ghost tiny" id="btnImport">Load responses (.json)</button>
+          <button class="btn ghost tiny" id="btnExport">Download responses (.json)</button>
+          <button class="btn ghost tiny" id="btnCSV">Export input table (.csv)</button>
+          <button class="btn ghost tiny" id="btnCopyInputs">Copy sizing inputs</button>
+          <button class="btn ghost tiny" id="btnEmail">Email results to my SE</button>
+          <button class="btn ghost tiny" id="btnPrint">Print / Save as PDF</button>
+          <button class="btn ghost tiny" id="btnClear" style="color:var(--red)">Clear saved data</button>
+          <input type="file" id="fileImport" accept="application/json,.json" style="display:none">
         </div>
       </div>
     </div>
   </aside>
 </div>
 
-<div class="metafoot">Cohesity Sizing Questionnaire &middot; interactive edition &middot; your answers stay in your browser</div>
+<div class="metafoot">Cohesity Sizing Questionnaire &middot; interactive edition &middot; your answers are saved only in your browser</div>
 
 <div class="modal" id="modal">
   <div class="modal-inner">
@@ -526,54 +587,67 @@
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 const workloads=['vm','phys','db','nas','m365','cloud'];
 const labels={vm:'Virtual Machines',phys:'Physical Servers',db:'Databases',nas:'NAS / Unstructured',m365:'Microsoft 365',cloud:'Cloud / Containers'};
-
-$$('.workload').forEach(sec=>{
-  const tog=sec.querySelector('.wtoggle');
-  const apply=()=>{ sec.classList.toggle('collapsed',!tog.checked); recalc(); updateProgress(); };
-  tog.addEventListener('change',apply); apply();
-});
-
-$$('.chk input').forEach(cb=>{
-  const set=()=>cb.closest('.chk').classList.toggle('on',cb.checked);
-  cb.addEventListener('change',()=>{set();recalc();updateProgress();}); set();
-});
-$$('.pills input,[data-radio] input').forEach(r=>r.addEventListener('change',()=>{recalc();updateProgress();}));
-$$('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{recalc();updateProgress();}));
-['dr_vm','dr_db','dr_nas','dr_phys','dr_m365','dr_cloud','buffer','resiliency','nodeRaw','defRet','defDgr']
-  .forEach(id=>$('#'+id).addEventListener('input',recalc));
-$('#resiliency').addEventListener('change',recalc);
+const LSKEY='cohesitySizingV2';
 
 function num(el){const v=parseFloat(el&&el.value);return isNaN(v)?0:v;}
 function workloadActive(w){const sec=document.querySelector(`[data-workload="${w}"]`);return sec&&!sec.classList.contains('collapsed');}
+function fmt(n){ if(!isFinite(n))return '0'; if(n>=100)return Math.round(n).toLocaleString(); if(n>=10)return n.toFixed(1); return n.toFixed(2);}
+
+$$('.workload').forEach(sec=>{
+  const tog=sec.querySelector('.wtoggle');
+  tog.addEventListener('change',()=>{ sec.classList.toggle('collapsed',!tog.checked); recalc(); updateProgress(); });
+});
+$$('.chk input').forEach(cb=>{
+  cb.addEventListener('change',()=>{ cb.closest('.chk').classList.toggle('on',cb.checked); recalc(); updateProgress(); });
+});
+$$('.pills input,[data-radio] input').forEach(r=>r.addEventListener('change',()=>{recalc();updateProgress();}));
+$$('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{recalc();updateProgress();}));
+['dr_vm','dr_db','dr_nas','dr_phys','dr_m365','dr_cloud','buffer','resiliency','nodeRaw','window','archCopies','archRR','archPct','defRet','defDgr','defAgr']
+  .forEach(id=>$('#'+id).addEventListener('input',recalc));
+$('#resiliency').addEventListener('change',recalc);
 
 function recalc(){
   const years=parseFloat($('[data-key=termYears]').value)||3;
   $('#estYears').textContent=years;
-  const buffer=Math.min(Math.max(num($('#buffer')),0),95)/100;      // buffer reserve, divide by (1-buffer)
-  const resUsable=parseFloat($('#resiliency').value)||0.5;          // resiliency usable fraction
+  const buffer=Math.min(Math.max(num($('#buffer')),0),95)/100;
+  const resUsable=parseFloat($('#resiliency').value)||0.5;
   const nodeRaw=num($('#nodeRaw'));
-  const defRet=num($('#defRet'))||30;
-  const defDgr=num($('#defDgr'))||3;
+  const windowH=Math.max(num($('#window')),0.5);
+  const archCopies=num($('#archCopies')), archRR=num($('#archRR'))||1, archPct=num($('#archPct'))/100;
+  const archOn=(document.querySelector('[data-radio=arch] input:checked')||{}).value==='Yes';
+  const defRet=num($('#defRet'))||30, defDgr=num($('#defDgr'))||3, defAgr=num($('#defAgr'))||7;
   const ratios={vm:num($('#dr_vm'))||1,db:num($('#dr_db'))||1,nas:num($('#dr_nas'))||1,phys:num($('#dr_phys'))||1,m365:num($('#dr_m365'))||1,cloud:num($('#dr_cloud'))||1};
 
-  let totFetb=0,totLogical=0,totBETB=0;
-  const bd=[];
+  let totFetb=0,totLogical=0,totBETB=0,drBETB=0,archFetbGrown=0,dailyIngestTB=0;
+  const bd=[]; const warn=[];
   workloads.forEach(w=>{
     if(!workloadActive(w))return;
     const fetb=num(document.querySelector(`[data-fetb="${w}"]`));
     if(fetb<=0)return;
-    const agr=(num(document.querySelector(`[data-agr="${w}"]`)))/100;
-    let dgr=num(document.querySelector(`[data-dgr="${w}"]`)); if(dgr<=0)dgr=defDgr; dgr=dgr/100;
+    var agrEl=document.querySelector(`[data-agr="${w}"]`); var agr=((agrEl&&agrEl.value.trim()!=='')?num(agrEl):defAgr)/100;
+    var dgrEl=document.querySelector(`[data-dgr="${w}"]`); var dgr=(dgrEl&&dgrEl.value.trim()!=='')?num(dgrEl):defDgr; const dgrF=dgr/100;
     let ret=num(document.querySelector(`[data-ret="${w}"]`)); if(ret<=0)ret=defRet;
-    const grown=fetb*Math.pow(1+agr,years);           // Step A: grow source
-    const logical=grown*(1 + dgr*ret);                // Step B: retained logical (DIR)
-    const betb=logical/(ratios[w]||1);                // Step C: post dedupe+compression
+    const nd=Math.min(Math.max(num(document.querySelector(`[data-nd="${w}"]`)),0),100)/100;
+    const grown=fetb*Math.pow(1+agr,years);
+    const logical=grown*(1 + dgrF*ret);
+    const betb=logical*((1-nd)/(ratios[w]||1) + nd);   // non-dedupable carve-out at 1:1
+    const phys=betb/(1-buffer)/resUsable;
     totFetb+=fetb; totLogical+=logical; totBETB+=betb;
-    bd.push({w,betb});
+    dailyIngestTB+=grown*dgrF;
+    const repEl=document.querySelector(`[data-rep="${w}"]`);
+    if(repEl && /^Yes/.test(repEl.value||'')) drBETB+=betb;
+    archFetbGrown+=grown;
+    bd.push({w,phys});
+    if(dgr>10) warn.push(`${labels[w]}: daily change ${dgr}% is unusually high — double-check.`);
+    const cntEl=document.querySelector(`[data-workload="${w}"] [data-count]`);
+    if(cntEl && num(cntEl)>0 && fetb<=0) warn.push(`${labels[w]}: a count is set but front-end TB is blank.`);
   });
-  const buffered=totBETB/(1-buffer);                  // Step D: + buffer
-  const physical=buffered/resUsable;                  // Step E: physical required TB
+  const buffered=totBETB/(1-buffer);
+  const physical=buffered/resUsable;
   const nodes=(nodeRaw>0 && physical>0)?Math.ceil(physical/nodeRaw):null;
+  const drPhysical=drBETB/(1-buffer)/resUsable;
+  const archivePool=(archOn && archCopies>0)? archFetbGrown*archPct*archCopies/archRR : 0;
+  const ingestRateMBs=(dailyIngestTB*1e6)/(windowH*3600);
 
   $('#estFetb').textContent=fmt(totFetb)+' TB';
   $('#estLogical').textContent=fmt(totLogical)+' TB';
@@ -584,15 +658,25 @@ function recalc(){
   $('#estBuf').textContent=Math.round(buffer*100);
   $('#estResPct').textContent=Math.round(resUsable*100);
   $('#estNodes').textContent=nodes?nodes:'—';
+  $('#estDR').textContent=fmt(drPhysical)+' TB';
+  $('#estArch').textContent=archOn?fmt(archivePool)+' TB':'off';
+  $('#estIngest').textContent=dailyIngestTB>0?(fmt(dailyIngestTB)+' TB/day · '+fmt(ingestRateMBs)+' MB/s'):'—';
 
   const bdEl=$('#breakdown');
-  bdEl.innerHTML = bd.length? bd.map(b=>`<div class="est-row"><span>${labels[b.w]}</span><b>${fmt(b.betb/(1-buffer)/resUsable)} TB</b></div>`).join('')
+  bdEl.innerHTML = bd.length? bd.map(b=>`<div class="est-row"><span>${labels[b.w]}</span><b>${fmt(b.phys)} TB</b></div>`).join('')
     : '<div class="est-row" style="color:var(--muted)"><span>Enter front-end TB in a workload to see the estimate</span></div>';
 
-  window.__physical=physical; window.__bd=bd; window.__totFetb=totFetb;
-  window.__buffer=buffer; window.__resUsable=resUsable; window.__betb=totBETB; window.__buffered=buffered; window.__nodes=nodes;
+  const opt=$('#resiliency').options[$('#resiliency').selectedIndex];
+  const minNodes=parseInt(opt.getAttribute('data-min')||'3',10);
+  if(nodes!==null && nodes<minNodes) warn.push(`Selected resiliency (${opt.text.split('—')[0].trim()}) typically needs at least ${minNodes} nodes; estimate is ${nodes}.`);
+  if(buffer*100<15 && physical>0) warn.push('Buffer below 15% is not recommended for a field estimate.');
+  $('#warnings').innerHTML = warn.length? warn.map(w=>`<div class="warn">${w}</div>`).join('') : '';
+
+  Object.assign(window,{__physical:physical,__bd:bd,__totFetb:totFetb,__buffer:buffer,__resUsable:resUsable,
+    __betb:totBETB,__buffered:buffered,__nodes:nodes,__dr:drPhysical,__arch:archivePool,__archOn:archOn,
+    __ingestTB:dailyIngestTB,__ingestMBs:ingestRateMBs,__years:years});
+  saveState();
 }
-function fmt(n){ if(n>=100)return Math.round(n).toLocaleString(); if(n>=10)return n.toFixed(1); return n.toFixed(2);}
 
 function updateProgress(){
   let req=[],done=0;
@@ -604,16 +688,11 @@ function updateProgress(){
   $('#progtext').textContent=pct+'% of required fields complete ('+done+'/'+req.length+')';
   buildNav();
 }
-
 function buildNav(){
-  const nav=$('#nav');
-  const secs=$$('main section.card');
-  nav.innerHTML=secs.map(s=>{
+  $('#nav').innerHTML=$$('main section.card').map(s=>{
     const collapsed=s.dataset.workload && s.classList.contains('collapsed');
     const reqs=Array.from(s.querySelectorAll('[data-req],[data-reqif]')).filter(el=>!(s.classList.contains('collapsed')&&el.hasAttribute('data-reqif')));
-    let cls='';
-    if(reqs.length){ cls = reqs.every(el=>el.value&&el.value.trim()) ? 'done':''; }
-    if(collapsed) cls='';
+    let cls=''; if(reqs.length){ cls = reqs.every(el=>el.value&&el.value.trim()) ? 'done':''; } if(collapsed) cls='';
     return `<a href="#${s.id}" class="${cls}"><span class="dot"></span>${s.dataset.title}</a>`;
   }).join('');
 }
@@ -626,35 +705,142 @@ function gather(){
   d.__activeWorkloads=workloads.filter(workloadActive).map(w=>labels[w]);
   return d;
 }
+function applyData(d){
+  $$('[data-key]').forEach(el=>{ if(d[el.dataset.key]!=null) el.value=d[el.dataset.key]; });
+  $$('[data-radio]').forEach(g=>{ const v=d[g.dataset.radio]; if(v!=null){ const inp=Array.from(g.querySelectorAll('input')).find(i=>i.value===v); if(inp)inp.checked=true; } });
+  $$('[data-multi]').forEach(g=>{ const arr=d[g.dataset.multi]; if(Array.isArray(arr)) g.querySelectorAll('input').forEach(i=>{ i.checked=arr.includes(i.value); }); });
+  const act=Array.isArray(d.__activeWorkloads)?d.__activeWorkloads:null;
+  $$('.workload').forEach(sec=>{ const w=sec.dataset.workload;
+    const on = act ? act.includes(labels[w]) : Object.keys(d).some(k=>k.indexOf(w+'_')===0);
+    const tog=sec.querySelector('.wtoggle'); tog.checked=on; sec.classList.toggle('collapsed',!on); });
+  $$('.chk input').forEach(cb=>cb.closest('.chk').classList.toggle('on',cb.checked));
+  recalc(); updateProgress();
+}
+
+let saveTimer=null;
+function saveState(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{ try{ localStorage.setItem(LSKEY,JSON.stringify(gather()));
+    $('#saveflag').textContent='Saved '+new Date().toLocaleTimeString(); }catch(e){} },400);
+}
+function restoreState(){
+  try{ const raw=localStorage.getItem(LSKEY); if(raw){ applyData(JSON.parse(raw)); return true; } }catch(e){}
+  return false;
+}
+
+function urlPrefill(){
+  const p=new URLSearchParams(location.search); if(![...p].length)return;
+  const map={company:'company',contact:'contact',email:'email',se:'accountteam',account:'accountteam'};
+  Object.keys(map).forEach(k=>{ if(p.get(k)){ const el=document.querySelector(`[data-key="${map[k]}"]`); if(el)el.value=p.get(k); } });
+  recalc(); updateProgress();
+}
+
+const SAMPLE={
+  company:"Contoso Financial (SAMPLE)", industry:"Financial services",
+  contact:"Jane Smith", email:"jane.smith@contoso.example", accountteam:"se@cohesity.example",
+  usecase:["Backup & recovery","Ransomware / cyber resilience","Disaster recovery"],
+  driver:"Competitive renewal + ransomware audit", timeframe:"3-6 months", termYears:"3", deploy:"Appliance",
+  sites:"2", replication:"Yes - Primary to DR", mt:"No",
+  vm_hypervisor:"VMware vSphere 8.x", vm_count:"450", vm_fetb:"320", vm_pctvirt:"90",
+  vm_agr:"10", vm_dgr:"3", vm_ret:"30", vm_nd:"0", vm_rep:"Yes - Primary to DR",
+  db_platforms:["Microsoft SQL Server","Oracle"], db_fetb:"80", db_instances:"40",
+  db_sqltopo:"Always On AG", db_hosting:"Both", db_method:"Cohesity agent (integrated)",
+  db_agr:"8", db_dgr:"4", db_ret:"30", db_nd:"10", db_logfreq:"Every 15 min", db_rep:"Yes - Primary to DR",
+  nas_fetb:"200", nas_files:"120", nas_vendor:"NetApp ONTAP", nas_proto:["SMB / CIFS","NFS"],
+  nasperf:"Throughput", nas_agr:"10", nas_dgr:"2", nas_ret:"30", nas_nd:"15", nas_rep:"No",
+  m365_arch:"Fully in M365 cloud", m365_dir:"Entra ID / Azure AD only", m365_users:"3000",
+  m365_workloads:["Exchange Online","OneDrive","SharePoint Online"], m365_fetb:"40",
+  m365_agr:"10", m365_dgr:"2", m365_ret:"365", m365_target:"On-prem Cohesity cluster",
+  arch:"Yes", arch_target:"Azure Blob", arch_policy:"30 days on cluster, monthly to cloud retained 7 years",
+  sec_caps:["Immutable snapshots (DataLock)","Ransomware / anomaly detection","Encryption at rest & in flight"],
+  sec_frameworks:"PCI-DSS, SOX", cur_solution:"Veeam", curcoh:"No",
+  __activeWorkloads:["Virtual Machines","Databases","NAS / Unstructured","Microsoft 365"]
+};
+$('#btnSample').addEventListener('click',()=>{applyData(JSON.parse(JSON.stringify(SAMPLE)));window.scrollTo({top:0,behavior:'smooth'});});
+$('#btnImport').addEventListener('click',()=>$('#fileImport').click());
+$('#fileImport').addEventListener('change',e=>{ const f=e.target.files[0]; if(!f)return;
+  const rd=new FileReader(); rd.onload=()=>{ try{ applyData(JSON.parse(rd.result)); }catch(err){ alert('Could not read that file as JSON: '+err.message); } };
+  rd.readAsText(f); e.target.value=''; });
+
+$('#btnRV').addEventListener('click',()=>$('#fileRV').click());
+$('#fileRV').addEventListener('change',e=>{ const f=e.target.files[0]; if(!f)return;
+  const rd=new FileReader(); rd.onload=()=>{ try{ importVMCsv(rd.result); }catch(err){ alert('Could not parse CSV: '+err.message); } };
+  rd.readAsText(f); e.target.value=''; });
+function splitCsvLine(line){ const out=[];let cur='',q=false;
+  for(let i=0;i<line.length;i++){const c=line[i];
+    if(c==='"'){ if(q&&line[i+1]==='"'){cur+='"';i++;} else q=!q; }
+    else if(c===','&&!q){out.push(cur);cur='';} else cur+=c; }
+  out.push(cur); return out; }
+function importVMCsv(text){
+  const lines=text.split(/\r?\n/).filter(l=>l.trim().length);
+  if(lines.length<2){alert('CSV looks empty.');return;}
+  const hdr=splitCsvLine(lines[0]).map(h=>h.trim().toLowerCase());
+  const prefer=['in use mib','in use mb','consumed mib','used mib','provisioned mib','capacity mib','in use','used','capacity','size (gb)','size','used gb','used tb'];
+  let idx=-1,unit='mib';
+  for(const p of prefer){ idx=hdr.findIndex(h=>h.includes(p)); if(idx>=0){ if(/tb/.test(hdr[idx]))unit='tb'; else if(/gb/.test(hdr[idx]))unit='gb'; else unit='mib'; break; } }
+  let count=0,totalTB=0;
+  for(let i=1;i<lines.length;i++){ const cells=splitCsvLine(lines[i]); if(cells.length<hdr.length-1)continue; count++;
+    if(idx>=0){ const v=parseFloat((cells[idx]||'').replace(/[^0-9.\-]/g,'')); if(!isNaN(v)){ totalTB += unit==='mib'? v/1048576 : unit==='gb'? v/1024 : v; } } }
+  document.querySelector('[data-key="vm_count"]').value=count;
+  if(idx>=0 && totalTB>0) document.querySelector('[data-key="vm_fetb"]').value=totalTB.toFixed(2);
+  const vmtog=document.querySelector('#s-vm .wtoggle'); vmtog.checked=true; document.querySelector('#s-vm').classList.remove('collapsed');
+  recalc(); updateProgress();
+  alert(`Imported ${count} VMs`+(idx>=0?` and ${totalTB.toFixed(2)} TB (from "${hdr[idx]}")`:' (no capacity column found — enter front-end TB manually)')+'.');
+}
+
+$('#btnM365').addEventListener('click',()=>{
+  const users=num(document.querySelector('[data-key="m365_users"]'));
+  if(users<=0){alert('Enter the number of licensed user mailboxes first.');return;}
+  const mb=num($('#mbSize'))||2, od=num($('#odSize'))||5;
+  const wl=Array.from(document.querySelectorAll('[data-multi=m365_workloads] input:checked')).map(i=>i.value);
+  let perUserGB=0;
+  if(!wl.length || wl.includes('Exchange Online')) perUserGB+=mb;
+  if(!wl.length || wl.includes('OneDrive')) perUserGB+=od;
+  const tb=users*perUserGB/1024;
+  document.querySelector('[data-key="m365_fetb"]').value=tb.toFixed(2);
+  recalc(); updateProgress();
+  alert(`Estimated ${tb.toFixed(2)} TB from ${users} users (${perUserGB} GB/user). SharePoint/Teams not included — add if needed.`);
+});
 
 $('#btnSummary').addEventListener('click',()=>{
-  recalc();
-  const d=gather();
-  const buf=window.__buffer||0.2, res=window.__resUsable||0.5;
+  recalc(); const d=gather();
+  const buf=window.__buffer||0.2;
   const R=(lbl,val)=> val!=null&&val!==''? `<tr><td>${lbl}</td><td>${Array.isArray(val)?val.join(', '):val}</td></tr>`:'';
   let html='';
   const physical=window.__physical||0;
   const resLabel=$('#resiliency').options[$('#resiliency').selectedIndex].text;
   const nodeTxt=window.__nodes?` &middot; ~${window.__nodes} node(s)`:'';
-  html+=`<div class="rec-box"><div class="est-label">Estimated physical capacity to size for</div><div class="bignum">${fmt(physical)} TB</div>
+  html+=`<div class="rec-box"><div class="est-label">Estimated physical capacity to size for (primary)</div><div class="bignum">${fmt(physical)} TB</div>
     <div style="font-size:12.5px;color:var(--slate);margin-top:6px">Across: ${(d.__activeWorkloads||[]).join(', ')||'&mdash;'} &middot; ${d.termYears||3}-year horizon &middot; ${Math.round(buf*100)}% buffer &middot; ${resLabel}${nodeTxt}</div></div>`;
+
+  const bfd=window.__buffered||0;
+  html+=`<div class="sumsec"><h4>Physical capacity by resiliency (same inputs)</h4><div class="scen">
+    <div><span>RF2 (50%)</span><b>${fmt(bfd/0.50)}</b></div>
+    <div><span>EC 2:1 (67%)</span><b>${fmt(bfd/0.67)}</b></div>
+    <div><span>EC 4:2 (67%)</span><b>${fmt(bfd/0.67)}</b></div>
+    <div><span>EC 5:2 (71%)</span><b>${fmt(bfd/0.71)}</b></div></div>
+    <div style="font-size:11.5px;color:var(--muted)">TB. Efficiency improves with EC but requires higher minimum node counts.</div></div>`;
+
   if(window.__bd&&window.__bd.length){
     html+=`<div class="sumsec"><h4>Physical capacity by workload (TB)</h4><table class="sum">`+
-      window.__bd.map(b=>`<tr><td>${labels[b.w]}</td><td>${fmt(b.betb/(1-buf)/res)} TB</td></tr>`).join('')+
-      `<tr><td><b>Total physical required</b></td><td><b>${fmt(physical)} TB</b></td></tr>`+
-      (window.__nodes?`<tr><td><b>Estimated nodes</b></td><td><b>${window.__nodes}</b></td></tr>`:'')+
+      window.__bd.map(b=>`<tr><td>${labels[b.w]}</td><td>${fmt(b.phys)} TB</td></tr>`).join('')+
+      `<tr><td><b>Total primary physical</b></td><td><b>${fmt(physical)} TB</b></td></tr>`+
+      (window.__dr>0?`<tr><td>Replication / DR pool</td><td>${fmt(window.__dr)} TB</td></tr>`:'')+
+      (window.__archOn&&window.__arch>0?`<tr><td>Cloud archive pool (est.)</td><td>${fmt(window.__arch)} TB</td></tr>`:'')+
+      (window.__ingestTB>0?`<tr><td>Req. daily ingest</td><td>${fmt(window.__ingestTB)} TB/day (${fmt(window.__ingestMBs)} MB/s)</td></tr>`:'')+
+      (window.__nodes?`<tr><td>Estimated nodes (primary)</td><td>${window.__nodes}</td></tr>`:'')+
       `</table></div>`;
   }
   const sec=(title,pairs)=>{const body=pairs.map(([l,k])=>R(l,d[k])).join(''); return body?`<div class="sumsec"><h4>${title}</h4><table class="sum">${body}</table></div>`:'';};
   html+=sec('Customer & Contact',[['Company','company'],['Industry','industry'],['Contact','contact'],['Email','email'],['Account team','accountteam'],['Date','date']]);
   html+=sec('Project',[['Use case','usecase'],['Driver','driver'],['Timeframe','timeframe'],['Horizon (yrs)','termYears'],['Deployment','deploy']]);
   html+=sec('Sites & Replication',[['Sites','sites'],['Replication','replication'],['Detail','repdetail'],['Bandwidth','bandwidth'],['Multi-tenant','mt']]);
-  html+=sec('Virtual Machines',[['Hypervisor','vm_hypervisor'],['# VMs','vm_count'],['Front-end TB','vm_fetb'],['AGR %','vm_agr'],['DGR %','vm_dgr'],['Retention days','vm_ret'],['Replicate','vm_rep'],['Notes','vm_notes']]);
-  html+=sec('Physical Servers',[['# Servers','phys_count'],['Front-end TB','phys_fetb'],['OS','phys_os'],['BMR','bmr'],['AGR %','phys_agr'],['DGR %','phys_dgr'],['Retention days','phys_ret'],['Replicate','phys_rep']]);
-  html+=sec('Databases',[['Platforms','db_platforms'],['Front-end TB','db_fetb'],['Instances','db_instances'],['SQL topology','db_sqltopo'],['Oracle RAC','db_rac'],['TDE/Compression','db_tde'],['Hosting','db_hosting'],['Method','db_method'],['AGR %','db_agr'],['DGR %','db_dgr'],['Retention days','db_ret'],['Log freq','db_logfreq'],['Replicate','db_rep'],['Notes','db_notes']]);
-  html+=sec('NAS / Unstructured',[['Front-end TB','nas_fetb'],['# Files (M)','nas_files'],['Avg file size','nas_avgsize'],['Vendor','nas_vendor'],['Protocols','nas_proto'],['Perf priority','nasperf'],['AGR %','nas_agr'],['DGR %','nas_dgr'],['Retention days','nas_ret'],['% non-dedupe','nas_nodedupe'],['Read MB/s','nas_read'],['Write MB/s','nas_write']]);
-  html+=sec('Microsoft 365',[['Architecture','m365_arch'],['Directory','m365_dir'],['Users','m365_users'],['Shared mbx','m365_shared'],['Workloads','m365_workloads'],['Front-end TB','m365_fetb'],['AGR %','m365_agr'],['DGR %','m365_dgr'],['Retention days','m365_ret'],['Target','m365_target']]);
-  html+=sec('Cloud / Containers',[['Platforms','cloud_platforms'],['Types','cloud_types'],['K8s','cloud_k8s'],['Front-end TB','cloud_fetb'],['AGR %','cloud_agr'],['DGR %','cloud_dgr'],['Retention days','cloud_ret']]);
+  html+=sec('Virtual Machines',[['Hypervisor','vm_hypervisor'],['# VMs','vm_count'],['Front-end TB','vm_fetb'],['AGR %','vm_agr'],['DCR %','vm_dgr'],['Retention days','vm_ret'],['% non-dedupe','vm_nd'],['Replicate','vm_rep'],['Notes','vm_notes']]);
+  html+=sec('Physical Servers',[['# Servers','phys_count'],['Front-end TB','phys_fetb'],['OS','phys_os'],['BMR','bmr'],['AGR %','phys_agr'],['DCR %','phys_dgr'],['Retention days','phys_ret'],['% non-dedupe','phys_nd'],['Replicate','phys_rep']]);
+  html+=sec('Databases',[['Platforms','db_platforms'],['Front-end TB','db_fetb'],['Instances','db_instances'],['SQL topology','db_sqltopo'],['Oracle RAC','db_rac'],['TDE/Compression','db_tde'],['Hosting','db_hosting'],['Method','db_method'],['AGR %','db_agr'],['DCR %','db_dgr'],['Retention days','db_ret'],['% non-dedupe','db_nd'],['Log freq','db_logfreq'],['Replicate','db_rep'],['Notes','db_notes']]);
+  html+=sec('NAS / Unstructured',[['Front-end TB','nas_fetb'],['# Files (M)','nas_files'],['Avg file size','nas_avgsize'],['Vendor','nas_vendor'],['Protocols','nas_proto'],['Perf priority','nasperf'],['AGR %','nas_agr'],['DCR %','nas_dgr'],['Retention days','nas_ret'],['% non-dedupe','nas_nd'],['Replicate','nas_rep'],['Read MB/s','nas_read'],['Write MB/s','nas_write']]);
+  html+=sec('Microsoft 365',[['Architecture','m365_arch'],['Directory','m365_dir'],['Users','m365_users'],['Shared mbx','m365_shared'],['Workloads','m365_workloads'],['Front-end TB','m365_fetb'],['AGR %','m365_agr'],['DCR %','m365_dgr'],['Retention days','m365_ret'],['% non-dedupe','m365_nd'],['Target','m365_target'],['Replicate','m365_rep']]);
+  html+=sec('Cloud / Containers',[['Platforms','cloud_platforms'],['Types','cloud_types'],['K8s','cloud_k8s'],['Front-end TB','cloud_fetb'],['AGR %','cloud_agr'],['DCR %','cloud_dgr'],['Retention days','cloud_ret'],['% non-dedupe','cloud_nd'],['Replicate','cloud_rep']]);
   html+=sec('Archive & LTR',[['Archive?','arch'],['Target','arch_target'],['Policy','arch_policy']]);
   html+=sec('Security & Compliance',[['Capabilities','sec_caps'],['Frameworks','sec_frameworks'],['RTO','sec_rto']]);
   html+=sec('Current Environment',[['Solution','cur_solution'],['Existing Cohesity','curcoh'],['Cluster detail','cur_cohdetail'],['Pain points','cur_pain']]);
@@ -667,26 +853,81 @@ $('#closeModal').addEventListener('click',()=>$('#modal').classList.remove('open
 $('#modal').addEventListener('click',e=>{if(e.target===$('#modal'))$('#modal').classList.remove('open');});
 
 $('#btnExport').addEventListener('click',()=>{
-  recalc();
-  const d=gather();
+  recalc(); const d=gather();
   d.__estimate={physicalRequiredTB:+(window.__physical||0).toFixed(2),postReductionBETB:+(window.__betb||0).toFixed(2),
     frontEndTB:+(window.__totFetb||0).toFixed(2),bufferPct:Math.round((window.__buffer||0)*100),
-    resiliencyUsablePct:Math.round((window.__resUsable||0)*100),estimatedNodes:window.__nodes||null};
-  const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='cohesity-sizing-'+((d.company||'customer').replace(/[^a-z0-9]/gi,'-'))+'.json';
-  a.click();
+    resiliencyUsablePct:Math.round((window.__resUsable||0)*100),estimatedNodes:window.__nodes||null,
+    drPoolTB:+(window.__dr||0).toFixed(2),archivePoolTB:+(window.__arch||0).toFixed(2),
+    dailyIngestTB:+(window.__ingestTB||0).toFixed(2),ingestMBs:+(window.__ingestMBs||0).toFixed(1)};
+  const ratios={vm:num($('#dr_vm')),db:num($('#dr_db')),nas:num($('#dr_nas')),phys:num($('#dr_phys')),m365:num($('#dr_m365')),cloud:num($('#dr_cloud'))};
+  d.__wstInputs={ horizonYears:+(d.termYears||3), bufferPct:Math.round((window.__buffer||0)*100), resiliencyUsablePct:Math.round((window.__resUsable||0)*100),
+    workloads: workloads.filter(workloadActive).map(w=>({ workload:labels[w],
+      frontEndTB:num(document.querySelector(`[data-fetb="${w}"]`)), agrPct:num(document.querySelector(`[data-agr="${w}"]`)),
+      dcrPct:num(document.querySelector(`[data-dgr="${w}"]`)), retentionDays:num(document.querySelector(`[data-ret="${w}"]`)),
+      reductionRatio:ratios[w], nonDedupePct:num(document.querySelector(`[data-nd="${w}"]`)),
+      replicate:(document.querySelector(`[data-rep="${w}"]`)||{}).value||'' })).filter(x=>x.frontEndTB>0) };
+  download(JSON.stringify(d,null,2),'application/json','cohesity-sizing-'+slug(d.company)+'.json');
+});
+$('#btnCSV').addEventListener('click',()=>{
+  recalc(); const d=gather();
+  const yrs=d.termYears||3, bufP=Math.round((window.__buffer||0)*100), resP=Math.round((window.__resUsable||0)*100);
+  const ratios={vm:num($('#dr_vm')),db:num($('#dr_db')),nas:num($('#dr_nas')),phys:num($('#dr_phys')),m365:num($('#dr_m365')),cloud:num($('#dr_cloud'))};
+  // clean rectangular table: one row per active workload, globals repeated as columns (import-friendly)
+  const rows=[['Company','Date','Workload','FrontEnd_TB','AGR_pct','DCR_pct','Retention_days','ReductionRatio','NonDedupe_pct','Replicate','Horizon_years','Buffer_pct','Resiliency_usable_pct','Physical_TB']];
+  workloads.forEach(w=>{ if(!workloadActive(w))return; const fetb=num(document.querySelector(`[data-fetb="${w}"]`)); if(fetb<=0)return;
+    const b=(window.__bd||[]).find(x=>x.w===w); const repEl=document.querySelector(`[data-rep="${w}"]`);
+    rows.push([d.company||'',d.date||'',labels[w],fetb,num(document.querySelector(`[data-agr="${w}"]`)),num(document.querySelector(`[data-dgr="${w}"]`)),
+      num(document.querySelector(`[data-ret="${w}"]`)),ratios[w],num(document.querySelector(`[data-nd="${w}"]`)),repEl?repEl.value:'',yrs,bufP,resP,b?b.phys.toFixed(2):'0']); });
+  const csv=rows.map(r=>r.map(c=>{c=(c==null?'':String(c)); return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;}).join(',')).join('\n');
+  download(csv,'text/csv','cohesity-sizing-'+slug(d.company)+'.csv');
+});
+$('#btnCopyInputs').addEventListener('click',()=>{
+  recalc(); const d=gather();
+  const pad=(s,n)=>String(s).padEnd(n);
+  const resLabel=$('#resiliency').options[$('#resiliency').selectedIndex].text.replace(/\s+/g,' ').trim();
+  const L=[];
+  L.push('Cohesity sizing inputs - '+(d.company||'customer')+(d.date?' - '+d.date:''));
+  L.push('Horizon: '+(d.termYears||3)+' yr | Buffer: '+Math.round((window.__buffer||0)*100)+'% | Resiliency: '+resLabel);
+  L.push('');
+  L.push(pad('WORKLOAD',20)+pad('FETB_TB',10)+pad('AGR%',6)+pad('DCR%',6)+pad('RET_d',7)+pad('REDUCT',8)+'NONDEDUP%');
+  workloads.forEach(w=>{ if(!workloadActive(w))return; const fetb=num(document.querySelector(`[data-fetb="${w}"]`)); if(fetb<=0)return;
+    L.push(pad(labels[w],20)+pad(fetb,10)+pad(num(document.querySelector(`[data-agr="${w}"]`)),6)+pad(num(document.querySelector(`[data-dgr="${w}"]`)),6)+pad(num(document.querySelector(`[data-ret="${w}"]`)),7)+pad(num($('#dr_'+w)),8)+num(document.querySelector(`[data-nd="${w}"]`))); });
+  L.push('');
+  L.push('Front-end: '+fmt(window.__totFetb||0)+' TB | Primary physical: '+fmt(window.__physical||0)+' TB | DR pool: '+fmt(window.__dr||0)+' TB | Archive: '+(window.__archOn?fmt(window.__arch||0)+' TB':'off')+' | Daily ingest: '+fmt(window.__ingestTB||0)+' TB/day ('+fmt(window.__ingestMBs||0)+' MB/s)');
+  const text=L.join('\n');
+  const done=()=>alert('Sizing inputs copied to clipboard. Paste into your sizing tool or a doc.');
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done,()=>copyFallback(text,done)); } else copyFallback(text,done);
+});
+function copyFallback(text,cb){ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); cb&&cb(); }
+$('#btnEmail').addEventListener('click',()=>{
+  recalc(); const d=gather();
+  const subj=`Cohesity sizing inputs - ${d.company||'customer'}`;
+  const body=[`Company: ${d.company||''}`,`Contact: ${d.contact||''} <${d.email||''}>`,`Account team: ${d.accountteam||''}`,'',
+    `Estimated primary physical: ${fmt(window.__physical||0)} TB`,
+    `Replication/DR pool: ${fmt(window.__dr||0)} TB`,
+    `Archive pool: ${window.__archOn?fmt(window.__arch||0)+' TB':'off'}`,
+    `Daily ingest: ${fmt(window.__ingestTB||0)} TB/day (${fmt(window.__ingestMBs||0)} MB/s)`,
+    `Buffer: ${Math.round((window.__buffer||0)*100)}%  Resiliency usable: ${Math.round((window.__resUsable||0)*100)}%  Horizon: ${d.termYears||3} yr`,
+    `Active workloads: ${(d.__activeWorkloads||[]).join(', ')}`,'',
+    'Tip: use "Download responses" to attach the full JSON to this email.'].join('\n');
+  const rcpt=(d.accountteam&&d.accountteam.includes('@'))?d.accountteam:'';
+  location.href=`mailto:${rcpt}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
 });
 $('#btnPrint').addEventListener('click',()=>{ $('#btnSummary').click(); setTimeout(()=>window.print(),200); });
+$('#btnClear').addEventListener('click',()=>{ if(confirm('Clear all saved answers from this browser?')){ try{localStorage.removeItem(LSKEY);}catch(e){} location.href=location.pathname; } });
+
+function download(content,type,name){ const blob=new Blob([content],{type}); const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=name; a.click(); }
+function slug(s){ return (s||'customer').replace(/[^a-z0-9]/gi,'-'); }
 
 const secs=$$('main section.card');
-window.addEventListener('scroll',()=>{
-  let cur=secs[0].id;
-  secs.forEach(s=>{ if(window.scrollY+140>=s.offsetTop)cur=s.id; });
-  $$('#nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
-});
+window.addEventListener('scroll',()=>{ let cur=secs[0].id; secs.forEach(s=>{ if(window.scrollY+140>=s.offsetTop)cur=s.id; });
+  $$('#nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur)); });
 
+$$('.workload').forEach(sec=>{ const t=sec.querySelector('.wtoggle'); sec.classList.toggle('collapsed',!t.checked); });
+$$('.chk input').forEach(cb=>cb.closest('.chk').classList.toggle('on',cb.checked));
+restoreState();
+urlPrefill();
 recalc(); updateProgress();
 </script>
 </body>
